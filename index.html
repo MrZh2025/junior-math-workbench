@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -688,6 +688,325 @@
   .res-badge.free { background: var(--accent-light); color: var(--accent); }
   .res-badge.video { background: var(--pink-light); color: var(--pink); }
   .res-badge.paper { background: var(--warning-light); color: var(--warning); }
+
+  /* ==================== 3. 移动端 / 手机端深度专属适配 ==================== */
+  .table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .checkin-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+  .checkin-cell {
+    text-align: center;
+    padding: 7px 0;
+    border-radius: 8px;
+    font-size: 0.76em;
+    line-height: 1.4;
+    transition: all 0.2s;
+  }
+  .checkin-cell.done {
+    border: 1px solid var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .checkin-cell.undone {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    /* 视口与安全边距 */
+    body {
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+      -webkit-tap-highlight-color: transparent;
+    }
+    .container {
+      padding: 0 12px 60px;
+    }
+
+    /* 顶部 Header */
+    .header {
+      padding: 24px 14px 22px;
+    }
+    .header h1 {
+      font-size: 1.45em;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .header .subtitle {
+      font-size: 0.84em;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+    .header-actions {
+      margin-top: 12px;
+      gap: 8px;
+    }
+    .action-chip {
+      padding: 6px 12px;
+      font-size: 0.76em;
+      border-radius: 16px;
+    }
+
+    /* 数据总览面板 Dashboard */
+    .dashboard {
+      margin: -14px auto 14px;
+      padding: 14px;
+      gap: 14px;
+      border-radius: 12px;
+    }
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .stat-badge {
+      padding: 8px 4px;
+      border-radius: 8px;
+    }
+    .stat-badge .num {
+      font-size: 1.18em;
+    }
+    .stat-badge .txt {
+      font-size: 0.72em;
+    }
+    .pomo-box {
+      padding: 8px 12px;
+    }
+    .pomo-time {
+      font-size: 1.2em;
+    }
+
+    /* 搜索与筛选 */
+    .filter-bar {
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .search-input {
+      min-width: 100%;
+      padding: 9px 14px;
+      font-size: 0.85em;
+    }
+    .filter-tags {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .filter-tag {
+      text-align: center;
+      padding: 6px 0;
+      font-size: 0.78em;
+    }
+
+    /* App 级横向平滑滚动 Tab 导航栏 */
+    .tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-bottom: 14px;
+      gap: 6px;
+      padding-bottom: 2px;
+    }
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+    .tab-btn {
+      flex-shrink: 0;
+      white-space: nowrap;
+      padding: 9px 14px;
+      font-size: 0.85em;
+      border-radius: 8px 8px 0 0;
+    }
+
+    /* 板块头部 */
+    .block-header {
+      padding: 14px 16px;
+      gap: 12px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+    }
+    .block-header .icon {
+      font-size: 1.3em;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+    }
+    .block-header h3 {
+      font-size: 1.1em;
+    }
+    .block-header p {
+      font-size: 0.78em;
+    }
+
+    /* 面板与清单 */
+    .panel {
+      padding: 14px;
+      border-radius: 12px;
+    }
+    .panel h4 {
+      font-size: 0.95em;
+      margin-bottom: 10px;
+    }
+    .tree {
+      padding: 12px 14px;
+      font-size: 0.76em;
+      border-radius: 8px;
+    }
+
+    /* 知识点清单项移动端自适应卡片化 */
+    .checklist {
+      gap: 8px;
+    }
+    .checklist li {
+      flex-wrap: wrap;
+      padding: 12px 12px 10px;
+      gap: 8px 10px;
+      border-radius: 10px;
+    }
+    .checklist li:active {
+      transform: scale(0.99);
+      background: var(--card);
+    }
+    .status-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+    }
+    .checklist li .txt {
+      font-size: 0.9em;
+      line-height: 1.45;
+      flex: 1 1 calc(100% - 90px);
+    }
+    .grade-tag {
+      font-size: 0.7em;
+      padding: 2px 6px;
+    }
+    .item-actions {
+      width: 100%;
+      display: flex;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      margin-top: 2px;
+    }
+    .action-btn {
+      flex: 1;
+      justify-content: center;
+      padding: 8px 10px;
+      font-size: 0.8em;
+      border-radius: 6px;
+    }
+
+    /* 表格横向滚动容器 */
+    .plan-table {
+      min-width: 520px;
+      font-size: 0.82em;
+    }
+    .plan-table th, .plan-table td {
+      padding: 9px 10px;
+    }
+
+    /* 弹窗移动端抽屉式与尺寸自适应 */
+    .modal-overlay {
+      padding: 10px 8px;
+      align-items: flex-end;
+    }
+    .modal-card {
+      border-radius: 18px 18px 10px 10px;
+      max-height: 94vh;
+    }
+    .modal-header {
+      padding: 12px 16px;
+    }
+    .modal-header h3 {
+      font-size: 1.02em;
+    }
+    .modal-body {
+      padding: 14px 14px 20px;
+    }
+
+    /* 微课视窗 */
+    .video-hall-layout {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .blackboard-box {
+      padding: 14px;
+      min-height: auto;
+    }
+    .bb-content {
+      font-size: 0.88em;
+      padding: 12px;
+      line-height: 1.65;
+    }
+
+    /* 考公刷题视窗 */
+    .exam-top-bar {
+      padding: 10px 12px;
+      font-size: 0.82em;
+      margin-bottom: 12px;
+    }
+    .exam-timer {
+      font-size: 0.95em;
+    }
+    .exam-q-title {
+      font-size: 1.02em;
+      line-height: 1.5;
+    }
+    
+    /* 答题卡抽屉：手机端 5 列网格 */
+    .sheet-grid {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px 8px;
+    }
+    .sheet-circle {
+      font-size: 0.9em;
+      height: 38px;
+    }
+
+    /* 选项大卡片手感优化 */
+    .exam-opt-card {
+      padding: 12px 14px;
+      font-size: 0.9em;
+      border-radius: 10px;
+      gap: 10px;
+    }
+    .exam-opt-card:active {
+      transform: scale(0.98);
+    }
+    .exam-opt-circle {
+      width: 26px;
+      height: 26px;
+      font-size: 0.8em;
+    }
+
+    /* 底部操作条 */
+    .exam-footer-bar {
+      padding: 10px 14px;
+    }
+    .exam-footer-bar .btn-sm {
+      padding: 7px 12px;
+      font-size: 0.8em;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .header h1 { font-size: 1.3em; }
+    .header-actions { flex-direction: column; width: 100%; }
+    .action-chip { width: 100%; justify-content: center; }
+    .exam-footer-bar { flex-direction: column; gap: 8px; }
+    .exam-footer-bar > div { width: 100%; justify-content: space-between; }
+    .exam-footer-bar .btn-sm { flex: 1; text-align: center; }
+  }
 </style>
 </head>
 <body>

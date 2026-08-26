@@ -856,5 +856,525 @@
         "play": 157
       }
     ]
+  },
+  "b2-2": {
+    "keyword": "初中数学 一元一次方程应用题（行程/工程/利润/方案）",
+    "videos": [
+      {
+        "bvid": "BV1PkJczGEit",
+        "title": "【初中数学】销售利润问题，一个视频带你彻底搞定！",
+        "author": "小曼老师的数学课",
+        "duration": "19:35",
+        "play": 285434
+      },
+      {
+        "bvid": "BV11Y411p7so",
+        "title": "一元一次方程之配套/调配问题",
+        "author": "水灵灵老师",
+        "duration": "5:16",
+        "play": 2034
+      },
+      {
+        "bvid": "BV1cmBYYeEP5",
+        "title": "购买方案应用题解题技巧",
+        "author": "爱好数学的土拨鼠",
+        "duration": "11:25",
+        "play": 1737
+      }
+    ]
+  },
+  "b2-4": {
+    "keyword": "初中数学 二元一次方程组应用（鸡兔同笼/分段计费）",
+    "videos": [
+      {
+        "bvid": "BV1rz411e7T5",
+        "title": "小会老师——二元一次方程组 解二元一次方程组技巧-化繁为简",
+        "author": "GUOKUN7869",
+        "duration": "7:10",
+        "play": 7832
+      },
+      {
+        "bvid": "BV1kg411s7GQ",
+        "title": "一元二次方程养只因场篱笆面积问题还不会？学会这4道题保你满分",
+        "author": "中考数学老学长",
+        "duration": "10:9",
+        "play": 99230
+      },
+      {
+        "bvid": "BV1jc411G7LZ",
+        "title": "应用二元一次方程组—鸡兔同笼",
+        "author": "王小二的故事和我",
+        "duration": "8:37",
+        "play": 9807
+      }
+    ]
+  },
+  "b2-6": {
+    "keyword": "初中数学 不等式基本性质（乘除负数变号）",
+    "videos": [
+      {
+        "bvid": "BV1Lj41127sv",
+        "title": "x＜0，基本不等式求最值该如何处理",
+        "author": "悟道六维空间",
+        "duration": "3:29",
+        "play": 5337
+      },
+      {
+        "bvid": "BV1oA4m137Gt",
+        "title": "不等式的基本性质3：乘除负数，不等号方向改变",
+        "author": "小驴初中数学",
+        "duration": "5:26",
+        "play": 15222
+      },
+      {
+        "bvid": "BV1Jx411L7yM",
+        "title": "初中数学七年级下册 不等式的性质",
+        "author": "乐乐课堂-天天练APP",
+        "duration": "3:57",
+        "play": 217116
+      }
+    ]
+  },
+  "b2-9": {
+    "keyword": "初中数学 不等式(组)方案选择与最值应用",
+    "videos": [
+      {
+        "bvid": "BV1aP411J7UB",
+        "title": "配方法求二次式的最值",
+        "author": "实验中学数学李老师",
+        "duration": "7:13",
+        "play": 21921
+      },
+      {
+        "bvid": "BV1gW4y1C75k",
+        "title": "不等式简单应用之租车方案问题",
+        "author": "下水道的皮卡丘",
+        "duration": "7:3",
+        "play": 1602
+      },
+      {
+        "bvid": "BV1Wf4y147M3",
+        "title": "配方法求最值",
+        "author": "XES琦玉老师",
+        "duration": "17:40",
+        "play": 22548
+      }
+    ]
+  },
+  "b2-12": {
+    "keyword": "初中数学 一元二次方程实际应用（增长率/面积问题）",
+    "videos": [
+      {
+        "bvid": "BV1kg411s7GQ",
+        "title": "一元二次方程养只因场篱笆面积问题还不会？学会这4道题保你满分",
+        "author": "中考数学老学长",
+        "duration": "10:9",
+        "play": 99230
+      },
+      {
+        "bvid": "BV1aKMRzjEdE",
+        "title": "增长率问题—— 一元二次方程实际应用问题",
+        "author": "学无止境Mr刘",
+        "duration": "15:57",
+        "play": 21134
+      },
+      {
+        "bvid": "BV1pP4y1o7cf",
+        "title": "实际问题与一元二次方程，增长率",
+        "author": "实验中学数学李老师",
+        "duration": "10:37",
+        "play": 13611
+      }
+    ]
+  },
+  "b3-2": {
+    "keyword": "初中数学 函数概念与自变量取值范围",
+    "videos": [
+      {
+        "bvid": "BV1LY4y187Jz",
+        "title": "初中数学微课 - 二次函数自变量取值范围",
+        "author": "住进阳光里凌云九霄上",
+        "duration": "5:8",
+        "play": 3186
+      },
+      {
+        "bvid": "BV1xL411U7WF",
+        "title": "5.1 函数与它的表示法（2自变量的取值范围）",
+        "author": "陪你玩转数学天地",
+        "duration": "13:52",
+        "play": 1700
+      },
+      {
+        "bvid": "BV1bF411b7no",
+        "title": "九年级数学：一元二次方程有实数根，求k的取值范围？根的判别式",
+        "author": "方老师数学课堂",
+        "duration": "3:56",
+        "play": 18721
+      }
+    ]
+  },
+  "b3-4": {
+    "keyword": "初中数学 待定系数法与一次函数实际应用（方案决策）",
+    "videos": [
+      {
+        "bvid": "BV1Vs4y1Q7vv",
+        "title": "用待定系数法解一次函数试讲——初中数学",
+        "author": "努力上岸教师编",
+        "duration": "9:35",
+        "play": 6083
+      },
+      {
+        "bvid": "BV1op5i6PE2v",
+        "title": "一次函数7大核心考点全吃透，最后一道压轴题也能拿满分！",
+        "author": "亮亮巧解初中数学",
+        "duration": "29:34",
+        "play": 471064
+      },
+      {
+        "bvid": "BV1ErVyzgEQ9",
+        "title": "苏科版数学【初二上册】41.用一次函数解决问题 第一课时【配套课件+教案 请到 师哈哈 biiyy.com 免费下载 】",
+        "author": "名师大课堂",
+        "duration": "17:20",
+        "play": 5311
+      }
+    ]
+  },
+  "b3-6": {
+    "keyword": "初中数学 反比例与一次函数综合（k 面积模型）",
+    "videos": [
+      {
+        "bvid": "BV1we41117Xz",
+        "title": "一次函数反比例函数丝滑如窜稀，把你当傻子教",
+        "author": "中考数学老学长",
+        "duration": "19:15",
+        "play": 61196
+      },
+      {
+        "bvid": "BV1Tz421X7kz",
+        "title": "【初中数学】一个视频教你用面积法丝滑解决反比例函数问题！",
+        "author": "马哥初中几何",
+        "duration": "17:51",
+        "play": 192943
+      },
+      {
+        "bvid": "BV1UyUfBTE1X",
+        "title": "【九下数学】反比例函数与一次函数综合应用",
+        "author": "学无止境Mr刘",
+        "duration": "16:15",
+        "play": 9197
+      }
+    ]
+  },
+  "b3-9": {
+    "keyword": "初中数学 二次函数最值与几何动点压轴",
+    "videos": [
+      {
+        "bvid": "BV1UbKtzZEHT",
+        "title": "中考二次函数动点最值问题压轴大题，谁敢做！",
+        "author": "嘉靖学长-只讲干货",
+        "duration": "20:14",
+        "play": 15929
+      },
+      {
+        "bvid": "BV1BG411p7fs",
+        "title": "初中数学常考题型，二次函数周长最值问题",
+        "author": "叫我老李呀",
+        "duration": "5:14",
+        "play": 11125
+      },
+      {
+        "bvid": "BV1L5sdeMEj9",
+        "title": "压轴有绝招:【二次函数动点最值问题】3大秒杀绝招！冲刺满分必看！",
+        "author": "朱朱姐姐数学课堂",
+        "duration": "28:55",
+        "play": 33301
+      }
+    ]
+  },
+  "b4-2": {
+    "keyword": "初中数学 角的计算与余角、补角、角平分线",
+    "videos": [
+      {
+        "bvid": "BV1x8r2BCEKj",
+        "title": "《余角和补角》",
+        "author": "不会数学的曹一二",
+        "duration": "9:27",
+        "play": 5295
+      },
+      {
+        "bvid": "BV1b4411w7ZW",
+        "title": "【余角和补角】初一/七年级——数学加免费精品培优课",
+        "author": "数学加",
+        "duration": "20:57",
+        "play": 39279
+      },
+      {
+        "bvid": "BV1QV411v76s",
+        "title": "【初中数学】无生试讲——《余角和补角》，教案和逐字稿在专栏哦～#开学 VLOG#",
+        "author": "数学老师文小渊",
+        "duration": "8:22",
+        "play": 16916
+      }
+    ]
+  },
+  "b4-4": {
+    "keyword": "初中数学 平行线拐点模型（猪蹄/铅笔模型）",
+    "videos": [
+      {
+        "bvid": "BV1X1AJzPE8x",
+        "title": "【必考】初一数学平行线四大拐点模型！考试直接套用！",
+        "author": "亮亮巧解初中数学",
+        "duration": "7:34",
+        "play": 682283
+      },
+      {
+        "bvid": "BV1yv4y1b7KU",
+        "title": "七年级平行线四种模型☞猪蹄模型，铅笔模型，靴子模型，斜拐模型。形状不同，∠B，∠BPC，∠C三者的关系也不同，弄懂会证会应用。",
+        "author": "绿豆ly",
+        "duration": "5:55",
+        "play": 8378
+      },
+      {
+        "bvid": "BV1vT4y1g7bU",
+        "title": "【初中数学】七下，折线型(猪蹄型+铅笔型）",
+        "author": "sss333_",
+        "duration": "8:31",
+        "play": 2657
+      }
+    ]
+  },
+  "b4-6": {
+    "keyword": "初中数学 三角形三边关系、轴对称与等腰三角形",
+    "videos": [
+      {
+        "bvid": "BV1Dd2XBmEnx",
+        "title": "《十分钟速通教材》之初二数学上册第十三章！三角形！和三角形有关的线段&amp;三角形的内角与外角！",
+        "author": "亮亮巧解初中数学",
+        "duration": "12:7",
+        "play": 292655
+      },
+      {
+        "bvid": "BV16V411c7X1",
+        "title": "含30度角的直角三角形",
+        "author": "云可隐星",
+        "duration": "11:28",
+        "play": 13523
+      },
+      {
+        "bvid": "BV1UZ4y1P7k2",
+        "title": "等腰直角三角形的常见结论",
+        "author": "潇潇大羊咩咩咩",
+        "duration": "21:3",
+        "play": 14200
+      }
+    ]
+  },
+  "b5-2": {
+    "keyword": "初中数学 全等常见模型（角平分线/倍长中线/手拉手）",
+    "videos": [
+      {
+        "bvid": "BV1sq4y167L9",
+        "title": "【必背图形】等边手拉手模型 旋转全等 角平分线证明 旋转全等出等边三角形 旋转全等的性质",
+        "author": "无汤不数学",
+        "duration": "8:17",
+        "play": 4114
+      },
+      {
+        "bvid": "BV1FF411j7rM",
+        "title": "【初中数学】手拉手模型中的13个结论",
+        "author": "同学你搓澡么",
+        "duration": "15:29",
+        "play": 96830
+      },
+      {
+        "bvid": "BV1sJ4m1W7h2",
+        "title": "初中数学三角形八字模型与角平分线结合问题你看懂了吗",
+        "author": "小嘎咕老师",
+        "duration": "3:52",
+        "play": 1455
+      }
+    ]
+  },
+  "b5-4": {
+    "keyword": "初中数学 勾股定理折叠问题与最短路径",
+    "videos": [
+      {
+        "bvid": "BV1WtXjBXE9o",
+        "title": "勾股定理解立体图形最短路径问题",
+        "author": "一数-初中版",
+        "duration": "16:42",
+        "play": 48169
+      },
+      {
+        "bvid": "BV1Rb4y117ai",
+        "title": "【八上数学】勾股定理3：最短路径线段最值",
+        "author": "Why数",
+        "duration": "14:11",
+        "play": 54563
+      },
+      {
+        "bvid": "BV1va411g7KH",
+        "title": "四分钟讲解勾股定理易错题第8题:最短距离问题。",
+        "author": "彭剑数学工作室",
+        "duration": "3:52",
+        "play": 6853
+      }
+    ]
+  },
+  "b5-6": {
+    "keyword": "初中数学 特殊平行四边形综合与中点四边形",
+    "videos": [
+      {
+        "bvid": "BV1QY4y1e7FR",
+        "title": "二次函数背景下平行四边形的存在性之两动两定问题",
+        "author": "鬼鬼讲数学",
+        "duration": "6:13",
+        "play": 3126
+      },
+      {
+        "bvid": "BV17Z4y1T7uz",
+        "title": "52几何原本补充内容（平行四边形的判定方法3：两组对角分别相等的四边形是平行四边形）",
+        "author": "数行者",
+        "duration": "7:52",
+        "play": 2041
+      },
+      {
+        "bvid": "BV14m4y197xx",
+        "title": "[中考数学]平面几何模型——中点四边形模型",
+        "author": "会放羊的教书匠",
+        "duration": "12:51",
+        "play": 31313
+      }
+    ]
+  },
+  "b5-8": {
+    "keyword": "初中数学 相似模型（A字/8字/母子相似/一线三等角）",
+    "videos": [
+      {
+        "bvid": "BV1Vr4y1A7kh",
+        "title": "全等三角形几何模型三：双垂直模型",
+        "author": "D-夜白",
+        "duration": "16:31",
+        "play": 4003
+      },
+      {
+        "bvid": "BV1Fc411T7vz",
+        "title": "中考数学母子型双垂型相似及应用类型",
+        "author": "M中学数学学什么",
+        "duration": "12:18",
+        "play": 5439
+      },
+      {
+        "bvid": "BV1ybRQBdEM8",
+        "title": "第30集：相似三角形必考三大模型｜母子型+射影定理+一线三等角｜《模型速通》",
+        "author": "韩肇霖数学",
+        "duration": "5:10",
+        "play": 1013
+      }
+    ]
+  },
+  "b5-10": {
+    "keyword": "初中数学 解直角三角形应用（仰角俯角/坡度方位角）",
+    "videos": [
+      {
+        "bvid": "BV1Asf7BTEvB",
+        "title": "【九下数学系统课】坡度问题（坡度、破比）-锐角三角函数",
+        "author": "学无止境Mr刘",
+        "duration": "13:34",
+        "play": 7504
+      },
+      {
+        "bvid": "BV1ob411k71x",
+        "title": "28.2.2解直角三角形应用1-仰俯角、方位角、坡度",
+        "author": "老梁爱数学",
+        "duration": "39:13",
+        "play": 15352
+      },
+      {
+        "bvid": "BV1rHZrBaEcB",
+        "title": "【九下数学系统课】锐角三角函数-仰角俯角实际问题",
+        "author": "学无止境Mr刘",
+        "duration": "9:10",
+        "play": 7713
+      }
+    ]
+  },
+  "b6-2": {
+    "keyword": "初中数学 统计图表分析（扇形/条形/频数直方图）",
+    "videos": [
+      {
+        "bvid": "BV14A4m1F7Lc",
+        "title": "中职数学—8·5统计图表",
+        "author": "双木老师数学课",
+        "duration": "31:36",
+        "play": 12577
+      },
+      {
+        "bvid": "BV1QfFXzXEJd",
+        "title": "【高考一轮复习178】统计【随机抽查与图表】频率分布直方图",
+        "author": "数学石头哥",
+        "duration": "37:20",
+        "play": 2107
+      },
+      {
+        "bvid": "BV1vBffBBEVS",
+        "title": "初中数学 每日一练8 统计之图表应用",
+        "author": "季老师Math",
+        "duration": "9:34",
+        "play": 383
+      }
+    ]
+  },
+  "b6-4": {
+    "keyword": "初中数学 用样本估计总体与统计决策",
+    "videos": [
+      {
+        "bvid": "BV13M4y1X7yM",
+        "title": "中考总复习：总体、个体、样本和样本容量(910051)",
+        "author": "龙科数学",
+        "duration": "5:13",
+        "play": 6400
+      },
+      {
+        "bvid": "BV1UAhFzuEjo",
+        "title": "九上数学冀教版，用样本估量总体",
+        "author": "w和谐uv111",
+        "duration": "8:36",
+        "play": 193
+      },
+      {
+        "bvid": "BV1Lv411B7Mh",
+        "title": "【第12章】【模块一】【第2节】用样本估计总体（基础+常规）",
+        "author": "一数",
+        "duration": "47:17",
+        "play": 490478
+      }
+    ]
+  },
+  "b6-6": {
+    "keyword": "初中数学 概率综合应用（游戏公平性/几何概率）",
+    "videos": [
+      {
+        "bvid": "BV1CX4y1Z7Bk",
+        "title": "初中几何圆相关模型 与三角形综合应用模型",
+        "author": "实实在在的生活",
+        "duration": "4:50",
+        "play": 1276
+      },
+      {
+        "bvid": "BV1WU8vzaEap",
+        "title": "【数-理-化思维】初中数学-中考2025-几何综合应用-河北卷23题",
+        "author": "数-理-化思维",
+        "duration": "8:23",
+        "play": 364
+      },
+      {
+        "bvid": "BV1QSEDzdEPv",
+        "title": "【高一数学】必修二专项突破11：概率与统计的综合应用",
+        "author": "高中学霸理科研习社",
+        "duration": "15:43",
+        "play": 2236
+      }
+    ]
   }
 }
