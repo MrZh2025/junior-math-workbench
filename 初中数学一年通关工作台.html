@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<title>初中数学一年通关提升工作台 Pro · 考公级题库与微课精讲系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- 预载入抓取与生成的微课和 10 题真题库数据 -->
+<script src="math_data.js"></script>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-glow: rgba(37, 99, 235, 0.15);
+    --secondary: #7c3aed;
+    --secondary-light: #f5f3ff;
+    --accent: #059669;
+    --accent-light: #ecfdf5;
+    --warning: #d97706;
+    --warning-light: #fffbeb;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --pink: #db2777;
+    --pink-light: #fdf2f8;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #7c3aed 100%);
+    color: white;
+    padding: 36px 20px 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .header-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; }
+  .header h1 { font-size: 2.2em; font-weight: 900; margin-bottom: 8px; letter-spacing: 1px; }
+  .header .subtitle { font-size: 1.05em; opacity: 0.92; font-weight: 500; }
+  
+  .header-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .action-chip {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .action-chip:hover { background: rgba(255,255,255,0.3); transform: translateY(-1px); }
+
+  /* Container */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* Dashboard Panel */
+  .dashboard {
+    background: var(--card);
+    margin: -24px auto 20px;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1.2fr;
+    gap: 20px;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+  }
+  @media (max-width: 960px) {
+    .dashboard { grid-template-columns: 1fr; margin-top: -15px; }
+  }
+
+  .stat-col { display: flex; flex-direction: column; gap: 8px; }
+  .stat-title { font-size: 0.85em; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .progress-outer { height: 16px; background: var(--bg); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .progress-inner { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.4s ease; }
+  .stat-desc { font-size: 0.86em; color: var(--text-muted); display: flex; justify-content: space-between; }
+  .stat-desc b { color: var(--accent); }
+
+  .quick-stats { display: flex; gap: 14px; }
+  .stat-badge {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  .stat-badge .num { font-size: 1.3em; font-weight: 800; color: var(--primary); }
+  .stat-badge.danger .num { color: var(--danger); }
+  .stat-badge .txt { font-size: 0.76em; color: var(--text-muted); }
+
+  /* Pomodoro */
+  .pomo-box {
+    background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .pomo-time { font-size: 1.4em; font-weight: 800; font-family: monospace; color: var(--primary); }
+  .pomo-btns { display: flex; gap: 6px; }
+  .btn-sm {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.82em;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .btn-sm:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-sm.primary { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn-sm.primary:hover { background: var(--primary-hover); }
+
+  /* Search & Filter Bar */
+  .filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-input {
+    flex: 1;
+    min-width: 260px;
+    padding: 10px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.9em;
+    color: var(--text);
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+  .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+  .filter-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-tag {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.84em;
+    font-weight: 600;
+    background: var(--card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .filter-tag.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    border: 1px solid var(--border);
+    border-bottom: none;
+    background: var(--card);
+    padding: 12px 18px;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+    font-size: 0.92em;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    position: relative;
+  }
+  .tab-btn:hover { color: var(--primary); }
+  .tab-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .tab-btn.error-tab.active {
+    background: var(--danger);
+    border-color: var(--danger);
+  }
+  .tab-btn .badge-count {
+    background: rgba(255,255,255,0.25);
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 0.78em;
+    margin-left: 4px;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Block Header */
+  .block-header {
+    padding: 20px 24px;
+    color: white;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-md);
+  }
+  .block-header .icon {
+    font-size: 1.6em; width: 52px; height: 52px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .block-header h3 { font-size: 1.3em; margin-bottom: 4px; font-weight: 800; }
+  .block-header p { font-size: 0.85em; opacity: 0.92; }
+
+  .bg-blue { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+  .bg-purple { background: linear-gradient(135deg, #7c3aed, #8b5cf6); }
+  .bg-green { background: linear-gradient(135deg, #059669, #10b981); }
+  .bg-orange { background: linear-gradient(135deg, #d97706, #f59e0b); }
+  .bg-red { background: linear-gradient(135deg, #dc2626, #ef4444); }
+  .bg-pink { background: linear-gradient(135deg, #db2777, #ec4899); }
+
+  .block-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 20px; }
+  @media (max-width: 900px) { .block-grid { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+  }
+  .panel h4 {
+    color: var(--text);
+    margin-bottom: 14px;
+    font-size: 1.05em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Tree */
+  .tree {
+    background: #0f172a;
+    color: #cbd5e1;
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.82em;
+    line-height: 1.9;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+
+  /* Checklist items */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .checklist li {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.2s ease;
+    user-select: none;
+  }
+  .checklist li:hover {
+    border-color: var(--primary);
+    background: var(--card);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* 4-State Checkbox */
+  .status-btn {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    border: 2px solid var(--border-hover);
+    background: var(--card);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 800;
+    transition: all 0.2s;
+  }
+  .status-btn:hover { transform: scale(1.15); }
+  .checklist li.status-0 .status-btn { border-color: var(--border-hover); color: transparent; }
+  .checklist li.status-1 .status-btn { background: #fbbf24; border-color: #d97706; color: #78350f; } /* 学习中 */
+  .checklist li.status-2 .status-btn { background: var(--accent); border-color: var(--accent); color: white; } /* 已吃透 */
+  .checklist li.status-3 .status-btn { background: var(--danger); border-color: var(--danger); color: white; } /* 错题 */
+
+  .checklist li .txt {
+    flex: 1;
+    font-size: 0.94em;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .checklist li.status-2 .txt { color: var(--text-muted); text-decoration: line-through; }
+
+  .grade-tag {
+    font-size: 0.74em;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .g7 { background: var(--primary-light); color: var(--primary); }
+  .g8 { background: var(--secondary-light); color: var(--secondary); }
+  .g9 { background: var(--danger-light); color: var(--danger); }
+
+  .item-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .action-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.82em;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s;
+  }
+  .action-btn.video-btn { color: var(--pink); border-color: rgba(219, 39, 119, 0.25); background: var(--pink-light); }
+  .action-btn.video-btn:hover { background: var(--pink); color: white; transform: translateY(-1px); }
+  .action-btn.quiz-btn { color: var(--primary); border-color: rgba(37, 99, 235, 0.25); background: var(--primary-light); }
+  .action-btn.quiz-btn:hover { background: var(--primary); color: white; transform: translateY(-1px); }
+
+  /* Modals Common */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; animation: modalIn 0.25s ease; }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+
+  .modal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    width: 100%;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+  .modal-header {
+    padding: 16px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-header h3 { font-size: 1.2em; font-weight: 800; display: flex; align-items: center; gap: 10px; color: var(--text); }
+  .modal-close {
+    background: none; border: none; font-size: 1.5em; cursor: pointer; color: var(--text-muted);
+    width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { background: var(--border); color: var(--text); }
+  .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+
+  /* ==================== 1. 微课独立沉浸式黑板视窗样式 ==================== */
+  .video-modal-card { max-width: 1000px; }
+  .video-hall-layout {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 20px;
+    margin-top: 10px;
+  }
+  @media (max-width: 880px) {
+    .video-hall-layout { grid-template-columns: 1fr; }
+  }
+  
+  /* 名师电子黑板视窗 */
+  .blackboard-box {
+    background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+    border: 2px solid #334155;
+    border-radius: 14px;
+    padding: 20px;
+    color: #f1f5f9;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.5), 0 10px 25px -5px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 400px;
+  }
+  .bb-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 12px;
+  }
+  .bb-badge {
+    background: #059669;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.76em;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .bb-content {
+    font-size: 0.94em;
+    line-height: 1.8;
+    color: #e2e8f0;
+    flex: 1;
+    white-space: pre-wrap;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .bb-keypoints {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.86em;
+    color: #38bdf8;
+  }
+  .bb-keypoint-item { display: flex; align-items: flex-start; gap: 6px; }
+  
+  .episodes-list { display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto; }
+  .episode-item {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .episode-item:hover { border-color: var(--primary); background: var(--primary-light); transform: translateX(3px); }
+  .episode-item.active { border-color: var(--primary); background: var(--primary-light); border-width: 2px; }
+  .episode-item.active .ep-title { color: var(--primary); font-weight: 800; }
+  .ep-title { font-size: 0.95em; font-weight: 700; color: var(--text); }
+  .ep-desc { font-size: 0.82em; color: var(--text-muted); }
+
+  /* ==================== 2. 考公级题库刷题系统样式 ==================== */
+  .exam-modal-card { max-width: 880px; }
+  
+  /* 考公顶部状态栏 */
+  .exam-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: var(--bg);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    font-weight: 700;
+  }
+  .exam-timer { color: var(--primary); font-family: monospace; font-size: 1.1em; }
+  .exam-card-btn {
+    background: var(--card); border: 1px solid var(--border); padding: 5px 12px; border-radius: 6px;
+    cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 0.85em; font-weight: 700;
+  }
+  .exam-card-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* 答题卡抽屉/浮层 */
+  .sheet-modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: none;
+    box-shadow: var(--shadow-md);
+  }
+  .sheet-modal.active { display: block; animation: fadeIn 0.2s; }
+  .sheet-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; margin-top: 10px; }
+  .sheet-circle {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 0.88em; cursor: pointer; transition: all 0.15s;
+    background: var(--bg);
+  }
+  .sheet-circle:hover { transform: scale(1.1); }
+  .sheet-circle.current { border-color: var(--primary); color: var(--primary); font-weight: 900; }
+  .sheet-circle.correct { background: var(--accent); border-color: var(--accent); color: white; }
+  .sheet-circle.wrong { background: var(--danger); border-color: var(--danger); color: white; }
+
+  /* 单题容器 */
+  .exam-question-box { display: flex; flex-direction: column; gap: 18px; }
+  .exam-q-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .exam-q-title { font-size: 1.12em; font-weight: 700; color: var(--text); line-height: 1.6; }
+  
+  /* 考公大选项卡片 */
+  .exam-options { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+  .exam-opt-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .exam-opt-card:hover { border-color: var(--primary); background: var(--primary-light); transform: translateX(3px); }
+  .exam-opt-circle {
+    width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border-hover);
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85em; flex-shrink: 0;
+  }
+  .exam-opt-card.selected-correct { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .exam-opt-card.selected-correct .exam-opt-circle { background: var(--accent); border-color: var(--accent); color: white; }
+  .exam-opt-card.selected-wrong { background: var(--danger-light); border-color: var(--danger); color: var(--danger); }
+  .exam-opt-card.selected-wrong .exam-opt-circle { background: var(--danger); border-color: var(--danger); color: white; }
+
+  /* 粉笔级深度解析卡片 */
+  .exam-analysis-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-top: 14px;
+    display: none;
+    animation: fadeIn 0.3s;
+  }
+  .analysis-tag { font-size: 0.78em; padding: 2px 8px; border-radius: 6px; font-weight: 800; margin-right: 6px; }
+  .analysis-section { margin-bottom: 10px; font-size: 0.9em; line-height: 1.7; }
+  .analysis-section:last-child { margin-bottom: 0; }
+
+  /* 考公底部控制条 */
+  .exam-footer-bar {
+    padding: 14px 24px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* 考公成绩报告面板 */
+  .report-box {
+    text-align: center;
+    padding: 30px 20px;
+    display: none;
+  }
+  .report-score-circle {
+    width: 120px; height: 120px; border-radius: 50%;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 10px 20px -5px var(--primary-glow);
+  }
+  .report-score-num { font-size: 2.2em; font-weight: 900; line-height: 1; }
+  .report-score-label { font-size: 0.75em; opacity: 0.85; }
+
+  /* Plan Table & Resources */
+  .plan-table { width: 100%; border-collapse: collapse; font-size: 0.88em; margin-top: 12px; }
+  .plan-table th { background: var(--primary); color: white; padding: 12px; text-align: left; }
+  .plan-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .plan-table tr:hover td { background: var(--primary-light); }
+
+  .res-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+  .res-list li {
+    padding: 12px 16px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; font-size: 0.88em; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .res-list a { color: var(--primary); text-decoration: none; font-weight: 700; }
+  .res-list a:hover { text-decoration: underline; }
+  .res-badge { font-size: 0.74em; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+  .res-badge.free { background: var(--accent-light); color: var(--accent); }
+  .res-badge.video { background: var(--pink-light); color: var(--pink); }
+  .res-badge.paper { background: var(--warning-light); color: var(--warning); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-content">
+    <h1>初中数学一年通关提升工作台 Pro</h1>
+    <p class="subtitle">🎯 北师大版知识树全景 · 4大权威公开课精讲展厅 · 考公级10题真题精练系统</p>
+    <div class="header-actions">
+      <div class="action-chip" onclick="exportUserData()">💾 导出学习数据 (JSON)</div>
+      <label class="action-chip" style="margin:0;">
+        📂 导入学习记录
+        <input type="file" id="importFileInput" style="display:none" onchange="importUserData(event)">
+      </label>
+      <div class="action-chip" onclick="window.print()">🖨️ 打印 A4 复习单</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Dashboard Stats & Pomodoro -->
+  <div class="dashboard">
+    <div class="stat-col">
+      <div class="stat-title">🚩 总体提分通关进度</div>
+      <div class="progress-outer">
+        <div class="progress-inner" id="totalProgressBar"></div>
+      </div>
+      <div class="stat-desc">
+        <span id="totalDetail">已吃透 0 / 89 个考点</span>
+        <b id="totalPct">0%</b>
+      </div>
+    </div>
+
+    <div class="quick-stats">
+      <div class="stat-badge">
+        <div class="num" id="statPracticed">0</div>
+        <div class="txt">已练考题数</div>
+      </div>
+      <div class="stat-badge danger" style="cursor:pointer;" onclick="switchTab('tab-error')">
+        <div class="num" id="statErrors">0</div>
+        <div class="txt">错题待攻坚</div>
+      </div>
+    </div>
+
+    <!-- Pomodoro Timer -->
+    <div class="pomo-box">
+      <div>
+        <div style="font-size:0.75em; font-weight:700; color:var(--text-muted);">⏱️ 专注番茄钟</div>
+        <div class="pomo-time" id="pomoTime">25:00</div>
+      </div>
+      <div class="pomo-btns">
+        <button class="btn-sm primary" id="pomoToggleBtn" onclick="togglePomodoro()">开始</button>
+        <button class="btn-sm" onclick="resetPomodoro()">重置</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search & Filters -->
+  <div class="filter-bar">
+    <input type="text" class="search-input" id="searchKw" placeholder="🔍 搜索知识点名称、考点或年级（如：二次函数、配方法、八上）..." oninput="handleSearch()">
+    <div class="filter-tags">
+      <div class="filter-tag active" data-filter="all" onclick="setFilter('all', this)">全部考点</div>
+      <div class="filter-tag" data-filter="g7" onclick="setFilter('g7', this)">七年级</div>
+      <div class="filter-tag" data-filter="g8" onclick="setFilter('g8', this)">八年级</div>
+      <div class="filter-tag" data-filter="g9" onclick="setFilter('g9', this)">九年级</div>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs">
+    <div class="tab-btn active" data-tab="overview">🗺️ 路线与总览</div>
+    <div class="tab-btn" data-tab="b1">板块一 · 数与代数</div>
+    <div class="tab-btn" data-tab="b2">板块二 · 方程不等式</div>
+    <div class="tab-btn" data-tab="b3">板块三 · 函数与图像</div>
+    <div class="tab-btn" data-tab="b4">板块四 · 几何基础</div>
+    <div class="tab-btn" data-tab="b5">板块五 · 几何综合与圆</div>
+    <div class="tab-btn" data-tab="b6">板块六 · 统计与概率</div>
+    <div class="tab-btn error-tab" data-tab="error">❌ 错题攻坚本 <span class="badge-count" id="errorTabCount">0</span></div>
+    <div class="tab-btn" data-tab="resources">📚 权威公开课与题库源</div>
+  </div>
+
+  <!-- Tab 0: Overview -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="panel">
+      <h4>📅 一年通关 4 大阶段规划表</h4>
+      <table class="plan-table">
+        <thead>
+          <tr><th>阶段</th><th>月份</th><th>核心攻克模块</th><th>提分目标与里程碑</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>第一阶段：代数奠基</b></td>
+            <td>1 - 3 月</td>
+            <td>有理数运算、整式乘除、因式分解、一元一次方程、二元一次方程组</td>
+            <td>扫清所有基础计算障碍，计算准确率提升至 98% 以上。</td>
+          </tr>
+          <tr>
+            <td><b>第二阶段：几何突围</b></td>
+            <td>4 - 6 月</td>
+            <td>三角形全等判定、勾股定理、四边形、相似三角形判定与模型</td>
+            <td>熟练掌握八大几何辅助线模型（倍长中线、截长补短、一线三等角）。</td>
+          </tr>
+          <tr>
+            <td><b>第三阶段：函数登顶</b></td>
+            <td>7 - 9 月</td>
+            <td>一次函数、反比例函数 k 几何意义、二次函数图象与三大最值模型</td>
+            <td>攻克中考函数压轴大题，建立数形结合解析几何思维。</td>
+          </tr>
+          <tr>
+            <td><b>第四阶段：冲刺满分</b></td>
+            <td>10 - 12 月</td>
+            <td>圆的综合压轴、动点最值（胡不归/阿氏圆）、中考真题套卷模考</td>
+            <td>全真中考限时演练，彻底清空错题本，稳冲 115+ 分。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab 1: Block 1 -->
+  <div class="tab-content" id="tab-b1">
+    <div class="block-header bg-blue">
+      <div class="icon">🔢</div>
+      <div>
+        <h3>板块一：数与代数基础</h3>
+        <p>包含：有理数及其运算 · 整式的加减与乘除 · 因式分解 · 分式 · 二次根式</p>
+      </div>
+    </div>
+    <div class="block-grid">
+      <div class="panel">
+        <h4>🌲 教学知识大纲</h4>
+        <div class="tree">数与代数基础
+├ 有理数及其运算（七上）
+│  ├ 正负数与数轴 · 相反数 · 绝对值
+│  ├ 有理数加减乘除与乘方混合运算
+│  └ 科学记数法与有效数字
+├ 整式的加减与乘法（七下）
+│  ├ 单项式与多项式 · 同类项合并
+│  ├ 幂的运算（同底数/乘方/积的乘方）
+│  └ 平方差公式与完全平方公式
+├ 因式分解（八下）
+│  ├ 提公因式法 · 公式法
+│  └ 十字相乘法与分组分解
+├ 分式（八下）
+│  ├ 分式有意义条件 · 基本性质
+│  └ 分式通分约分与化简求值
+└ 二次根式（八上）
+   ├ 概念与双重非负性
+   └ 化简计算与分母有理化</div>
+      </div>
+      <div class="panel">
+        <h4>✅ 核心考点提升清单（点击左侧标记 · 点击整行刷10道真题 · 点击右侧看微课）</h4>
+        <ul class="checklist" data-block="b1">
+          <li data-id="b1-1"><button class="status-btn" onclick="cycleStatus('b1-1', event)"></button><span class="txt">正数、负数、有理数分类与数轴</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-1', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-1', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-2"><button class="status-btn" onclick="cycleStatus('b1-2', event)"></button><span class="txt">相反数、绝对值的几何意义与化简</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-2', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-2', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-3"><button class="status-btn" onclick="cycleStatus('b1-3', event)"></button><span class="txt">有理数加减乘除与乘方混合运算</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-3', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-3', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-4"><button class="status-btn" onclick="cycleStatus('b1-4', event)"></button><span class="txt">科学记数法、近似数与有效数字</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-4', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-4', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-5"><button class="status-btn" onclick="cycleStatus('b1-5', event)"></button><span class="txt">单项式、多项式、同类项与整式加减</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-5', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-5', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-6"><button class="status-btn" onclick="cycleStatus('b1-6', event)"></button><span class="txt">幂的运算性质（同底数幂乘除、乘方）</span><span class="grade-tag g7">七下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-6', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-6', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-7"><button class="status-btn" onclick="cycleStatus('b1-7', event)"></button><span class="txt">整式乘法与乘法公式（平方差、完全平方）</span><span class="grade-tag g7">七下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-7', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-7', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-8"><button class="status-btn" onclick="cycleStatus('b1-8', event)"></button><span class="txt">因式分解（提公因式、公式法、十字相乘）</span><span class="grade-tag g8">八下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-8', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-8', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-9"><button class="status-btn" onclick="cycleStatus('b1-9', event)"></button><span class="txt">分式基本性质、通分与约分</span><span class="grade-tag g8">八下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-9', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-9', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b1-10"><button class="status-btn" onclick="cycleStatus('b1-10', event)"></button><span class="txt">二次根式的概念、性质与化简计算</span><span class="grade-tag g8">八上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b1-10', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b1-10', event)">✏️ 刷真题(10题)</button></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2: Block 2 -->
+  <div class="tab-content" id="tab-b2">
+    <div class="block-header bg-purple">
+      <div class="icon">⚖️</div>
+      <div>
+        <h3>板块二：方程与不等式</h3>
+        <p>包含：一元一次方程 · 二元一次方程组 · 一元一次不等式(组) · 一元二次方程</p>
+      </div>
+    </div>
+    <div class="block-grid">
+      <div class="panel">
+        <h4>🌲 教学知识大纲</h4>
+        <div class="tree">方程与不等式
+├ 一元一次方程（七上）
+│  ├ 等式性质 · 解方程五步骤
+│  └ 行程/工程/利润/方案应用题
+├ 二元一次方程组（八上）
+│  ├ 代入消元法 · 加减消元法
+│  └ 鸡兔同笼/方案/分段计费
+├ 一元一次不等式（组）（八下）
+│  ├ 不等式性质3（负数变号）
+│  ├ 解集与数轴表示 · 四大口诀
+│  └ 方案选择与最值应用
+└ 一元二次方程（九上）
+   ├ 配方法/公式法/因式分解法
+   ├ 根的判别式 Δ=b²-4ac
+   └ 韦达定理与实际应用</div>
+      </div>
+      <div class="panel">
+        <h4>✅ 核心考点提升清单</h4>
+        <ul class="checklist" data-block="b2">
+          <li data-id="b2-1"><button class="status-btn" onclick="cycleStatus('b2-1', event)"></button><span class="txt">一元一次方程解法五步（去分母不漏乘）</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b2-1', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b2-1', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b2-3"><button class="status-btn" onclick="cycleStatus('b2-3', event)"></button><span class="txt">二元一次方程组：代入法与加减法</span><span class="grade-tag g8">八上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b2-3', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b2-3', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b2-7"><button class="status-btn" onclick="cycleStatus('b2-7', event)"></button><span class="txt">一元一次不等式解法与数轴表示</span><span class="grade-tag g8">八下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b2-7', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b2-7', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b2-8"><button class="status-btn" onclick="cycleStatus('b2-8', event)"></button><span class="txt">不等式组解集：四大口诀与含参问题</span><span class="grade-tag g8">八下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b2-8', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b2-8', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b2-10"><button class="status-btn" onclick="cycleStatus('b2-10', event)"></button><span class="txt">一元二次方程：配方法、公式法、因式分解法</span><span class="grade-tag g9">九上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b2-10', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b2-10', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b2-11"><button class="status-btn" onclick="cycleStatus('b2-11', event)"></button><span class="txt">根的判别式 Δ 与韦达定理应用</span><span class="grade-tag g9">九上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b2-11', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b2-11', event)">✏️ 刷真题(10题)</button></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Block 3 -->
+  <div class="tab-content" id="tab-b3">
+    <div class="block-header bg-green">
+      <div class="icon">📈</div>
+      <div>
+        <h3>板块三：函数与图像</h3>
+        <p>包含：平面直角坐标系 · 一次函数 · 反比例函数 · 二次函数与综合压轴</p>
+      </div>
+    </div>
+    <div class="block-grid">
+      <div class="panel">
+        <h4>🌲 教学知识大纲</h4>
+        <div class="tree">函数与图像
+├ 坐标系与函数初步（八上）
+│  ├ 坐标特征与对称规律
+│  └ 函数概念与自变量取值范围
+├ 一次函数与正比例函数（八上）
+│  ├ y=kx+b 图象与 k,b 几何意义
+│  └ 待定系数法与实际方案应用
+├ 反比例函数（九上）
+│  ├ y=k/x 双曲线图象与性质
+│  └ k 的几何意义与面积模型
+└ 二次函数（九下·中考核心）
+   ├ 三大解析式（一般/顶点/交点）
+   ├ 系数 a,b,c 符号与图象判定
+   └ 二次函数与几何最值/动点压轴</div>
+      </div>
+      <div class="panel">
+        <h4>✅ 核心考点提升清单</h4>
+        <ul class="checklist" data-block="b3">
+          <li data-id="b3-1"><button class="status-btn" onclick="cycleStatus('b3-1', event)"></button><span class="txt">平面直角坐标系与点的位置特征</span><span class="grade-tag g8">八上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b3-1', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b3-1', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b3-3"><button class="status-btn" onclick="cycleStatus('b3-3', event)"></button><span class="txt">一次函数与正比例函数的图象与性质</span><span class="grade-tag g8">八上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b3-3', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b3-3', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b3-5"><button class="status-btn" onclick="cycleStatus('b3-5', event)"></button><span class="txt">反比例函数图象、性质与 k 的几何意义</span><span class="grade-tag g9">九上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b3-5', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b3-5', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b3-7"><button class="status-btn" onclick="cycleStatus('b3-7', event)"></button><span class="txt">二次函数图象与三大解析式（平移规律）</span><span class="grade-tag g9">九下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b3-7', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b3-7', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b3-8"><button class="status-btn" onclick="cycleStatus('b3-8', event)"></button><span class="txt">二次函数系数 a,b,c 符号与“左同右异”</span><span class="grade-tag g9">九下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b3-8', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b3-8', event)">✏️ 刷真题(10题)</button></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 4: Block 4 -->
+  <div class="tab-content" id="tab-b4">
+    <div class="block-header bg-orange">
+      <div class="icon">📐</div>
+      <div>
+        <h3>板块四：图形与几何基础</h3>
+        <p>包含：基本平面图形 · 相交线与平行线 · 三角形基本性质 · 轴对称</p>
+      </div>
+    </div>
+    <div class="block-grid">
+      <div class="panel">
+        <h4>🌲 教学知识大纲</h4>
+        <div class="tree">图形与几何基础
+├ 几何图形初步（七上）
+│  ├ 线段/射线/直线 · 中点计算
+│  └ 角的分类/度量/计算与余角补角
+├ 相交线与平行线（七下）
+│  ├ 垂线段最短 · 同位角/内错角/同旁内角
+│  └ 平行线判定与性质 · 拐点模型
+└ 三角形基础（七下）
+   ├ 三边关系（两边之和大于第三边）
+   ├ 内角和定理与外角性质
+   └ 轴对称与等腰三角形性质</div>
+      </div>
+      <div class="panel">
+        <h4>✅ 核心考点提升清单</h4>
+        <ul class="checklist" data-block="b4">
+          <li data-id="b4-1"><button class="status-btn" onclick="cycleStatus('b4-1', event)"></button><span class="txt">线段、射线、直线与线段中点计算</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b4-1', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b4-1', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b4-3"><button class="status-btn" onclick="cycleStatus('b4-3', event)"></button><span class="txt">相交线与平行线的判定与性质</span><span class="grade-tag g7">七下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b4-3', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b4-3', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b4-5"><button class="status-btn" onclick="cycleStatus('b4-5', event)"></button><span class="txt">三角形内角和定理与外角性质</span><span class="grade-tag g7">七下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b4-5', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b4-5', event)">✏️ 刷真题(10题)</button></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 5: Block 5 -->
+  <div class="tab-content" id="tab-b5">
+    <div class="block-header bg-red">
+      <div class="icon">⭕</div>
+      <div>
+        <h3>板块五：几何综合与圆</h3>
+        <p>包含：全等三角形 · 勾股定理 · 四边形 · 相似三角形 · 解直角三角形 · 圆</p>
+      </div>
+    </div>
+    <div class="block-grid">
+      <div class="panel">
+        <h4>🌲 教学知识大纲</h4>
+        <div class="tree">几何综合与圆
+├ 全等三角形（八上）
+│  ├ 判定定理（SSS, SAS, ASA, AAS, HL）
+│  └ 常见全等模型（角平分线/手拉手）
+├ 勾股定理（八上）
+│  ├ 定理与逆定理 · 折叠问题方程
+├ 四边形（八下）
+│  ├ 平行四边形/矩形/菱形/正方形
+├ 相似三角形与三角函数（九上/九下）
+│  ├ 相似判定与性质（A/X/母子相似）
+│  └ 锐角三角函数特殊角值计算
+└ 圆（九下·中考压轴）
+   ├ 垂径定理 · 圆周角定理
+   └ 切线性质与判定（连半径证垂直）</div>
+      </div>
+      <div class="panel">
+        <h4>✅ 核心考点提升清单</h4>
+        <ul class="checklist" data-block="b5">
+          <li data-id="b5-1"><button class="status-btn" onclick="cycleStatus('b5-1', event)"></button><span class="txt">全等三角形的判定（SSS, SAS, ASA, AAS, HL）</span><span class="grade-tag g8">八上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b5-1', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b5-1', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b5-3"><button class="status-btn" onclick="cycleStatus('b5-3', event)"></button><span class="txt">勾股定理及其逆定理（分类讨论）</span><span class="grade-tag g8">八上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b5-3', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b5-3', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b5-5"><button class="status-btn" onclick="cycleStatus('b5-5', event)"></button><span class="txt">平行四边形、矩形、菱形与正方形性质与判定</span><span class="grade-tag g8">八下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b5-5', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b5-5', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b5-7"><button class="status-btn" onclick="cycleStatus('b5-7', event)"></button><span class="txt">相似三角形判定与面积比（相似比平方）</span><span class="grade-tag g9">九上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b5-7', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b5-7', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b5-9"><button class="status-btn" onclick="cycleStatus('b5-9', event)"></button><span class="txt">锐角三角函数（sin, cos, tan 特殊角值）</span><span class="grade-tag g9">九下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b5-9', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b5-9', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b5-11"><button class="status-btn" onclick="cycleStatus('b5-11', event)"></button><span class="txt">圆的性质（垂径定理、圆周角、切线）</span><span class="grade-tag g9">九下</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b5-11', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b5-11', event)">✏️ 刷真题(10题)</button></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 6: Block 6 -->
+  <div class="tab-content" id="tab-b6">
+    <div class="block-header bg-pink">
+      <div class="icon">📊</div>
+      <div>
+        <h3>板块六：统计与概率</h3>
+        <p>包含：数据的收集整理 · 统计图表 · 集中趋势与离散程度 · 概率初步</p>
+      </div>
+    </div>
+    <div class="block-grid">
+      <div class="panel">
+        <h4>🌲 教学知识大纲</h4>
+        <div class="tree">统计与概率
+├ 数据的收集与整理（七上）
+│  ├ 普查与抽样调查 · 总体与个体
+│  └ 扇形/条形/折线/频数直方图
+├ 数据的分析（八上）
+│  ├ 平均数/中位数/众数
+│  └ 方差与标准差（衡量稳定性）
+└ 概率初步（九上）
+   ├ 必然/不可能/随机事件
+   └ 列表法与树状图法概率计算</div>
+      </div>
+      <div class="panel">
+        <h4>✅ 核心考点提升清单</h4>
+        <ul class="checklist" data-block="b6">
+          <li data-id="b6-1"><button class="status-btn" onclick="cycleStatus('b6-1', event)"></button><span class="txt">普查与抽样、总体、个体、样本容量</span><span class="grade-tag g7">七上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b6-1', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b6-1', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b6-3"><button class="status-btn" onclick="cycleStatus('b6-3', event)"></button><span class="txt">平均数、中位数（先排序）、众数与方差</span><span class="grade-tag g8">八上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b6-3', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b6-3', event)">✏️ 刷真题(10题)</button></div></li>
+          <li data-id="b6-5"><button class="status-btn" onclick="cycleStatus('b6-5', event)"></button><span class="txt">简单概率计算（画树状图法与列表法）</span><span class="grade-tag g9">九上</span><div class="item-actions"><button class="action-btn video-btn" onclick="openVideoModal('b6-5', event)">📺 看微课</button><button class="action-btn quiz-btn" onclick="openExamModal('b6-5', event)">✏️ 刷真题(10题)</button></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 7: Error Bank -->
+  <div class="tab-content" id="tab-error">
+    <div class="panel">
+      <h4>❌ 我的错题与薄弱考点专攻本 <button class="btn-sm" onclick="clearAllErrors()">清空错题本</button></h4>
+      <p style="font-size:0.88em; color:var(--text-muted); margin-bottom:14px;">
+        提示：在 10 题真题刷题系统中答错的题目均已精准自动收录，点击即可重做攻克。
+      </p>
+      <ul class="checklist" id="errorChecklist">
+        <!-- JS 动态渲染错题 -->
+      </ul>
+      <div id="emptyErrorNotice" style="text-align:center; padding:40px 20px; color:var(--text-muted);">
+        🎉 太棒了！当前没有任何错题记录，请继续保持！
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 8: Resources -->
+  <div class="tab-content" id="tab-resources">
+    <div class="panel">
+      <h4>📚 权威中考公开课与试题资源库</h4>
+      <ul class="res-list">
+        <li>
+          <span>🏛️</span>
+          <a href="https://basic.smartedu.cn/" target="_blank">国家中小学智慧教育平台</a>
+          <span class="res-badge free">教育部官方</span>
+          <span style="width:100%; color:var(--text-muted); font-size:0.85em;">教育部官方新课标课程，北京四中/清华附中特级名师 1:1 同步微课录制。</span>
+        </li>
+        <li>
+          <span>📄</span>
+          <a href="https://czsx.com.cn/" target="_blank">初中数学网</a>
+          <span class="res-badge paper">北师大版</span>
+          <span style="width:100%; color:var(--text-muted); font-size:0.85em;">拥有近 10 年全国各地中考数学真题、单元同步卷与名校压轴题库。</span>
+        </li>
+        <li>
+          <span>🧅</span>
+          <a href="https://search.bilibili.com/all?keyword=%E6%B4%8B%E8%91%B1%E6%95%B0%E5%AD%A6" target="_blank">洋葱学园（动画微课专区）</a>
+          <span class="res-badge video">动画推导</span>
+          <span style="width:100%; color:var(--text-muted); font-size:0.85em;">5-8 分钟生动动画直观推导几何翻折与函数动点模型，全网公认最易懂。</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ==================== 1. 独立微课名师沉浸式黑板视窗 Modal ==================== -->
+<div class="modal-overlay" id="videoHallModal">
+  <div class="modal-card video-modal-card">
+    <div class="modal-header">
+      <h3 id="videoHallTitle">📺 名师精讲微课 · 沉浸式电子黑板</h3>
+      <button class="modal-close" onclick="closeModal('videoHallModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="videoHallFormulaBox" class="quiz-warning-box" style="margin-top:0; margin-bottom:12px;">
+        <!-- 考点口诀 -->
+      </div>
+      <div class="video-hall-layout">
+        <!-- 名师电子黑板视窗 -->
+        <div class="blackboard-box">
+          <div class="bb-header">
+            <div>
+              <span class="bb-badge" id="bbCurrentTag">概念精讲</span>
+              <b style="font-size:1.05em; margin-left:8px;" id="bbCurrentTitle">第 1 讲 · 核心概念与定理推导</b>
+            </div>
+            <span style="font-size:0.8em; color:#94a3b8;" id="bbCurrentDuration">时长：12:30</span>
+          </div>
+
+          <div class="bb-content" id="bbCurrentContent">
+            <!-- 详细板书内容 -->
+          </div>
+
+          <div>
+            <div style="font-size:0.82em; font-weight:700; color:#94a3b8; margin-bottom:6px;">🎯 本讲核心提分要点：</div>
+            <div class="bb-keypoints" id="bbCurrentKeypoints">
+              <!-- 核心要点 -->
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; margin-top:auto;">
+            <span style="font-size:0.8em; color:#94a3b8;">如需观看官方录制视频，可直达：</span>
+            <div style="display:flex; gap:8px;">
+              <a id="bbSmartEduLink" href="https://basic.smartedu.cn/" target="_blank" class="btn-sm" style="background:#059669; color:white; border:none; text-decoration:none; font-size:0.78em;">
+                🏛️ 国家智慧教育平台 ↗
+              </a>
+              <a id="bbOnionLink" href="https://search.bilibili.com/all?keyword=%E6%B4%8B%E8%91%B1%E6%95%B0%E5%AD%A6" target="_blank" class="btn-sm" style="background:#db2777; color:white; border:none; text-decoration:none; font-size:0.78em;">
+                🧅 洋葱动画微课 ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右侧选集列表 -->
+        <div>
+          <div style="font-size:0.92em; font-weight:700; color:var(--text); margin-bottom:8px;">📑 进阶讲义选集（点击即切）：</div>
+          <div class="episodes-list" id="videoHallEpisodesList">
+            <!-- 选集列表 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 2. 考公级 10 题真题刷题系统 Modal ==================== -->
+<div class="modal-overlay" id="examSystemModal">
+  <div class="modal-card exam-modal-card">
+    <div class="modal-header">
+      <h3 id="examModalTitle">✏️ 考点专项中考真题精练 (10题通关)</h3>
+      <button class="modal-close" onclick="closeModal('examSystemModal')">&times;</button>
+    </div>
+    <div class="modal-body" id="examModalBody">
+      
+      <!-- 顶部考公状态条 -->
+      <div class="exam-top-bar" id="examTopBar">
+        <div>
+          <span>第 <b id="examCurrentIdx" style="color:var(--primary); font-size:1.2em;">1</b> / 10 题</span>
+          <span id="examDiffBadge" style="margin-left:12px; font-size:0.85em; color:var(--warning);">★★☆☆☆</span>
+        </div>
+        <div class="exam-timer" id="examStopwatch">⏱️ 00:00</div>
+        <button class="exam-card-btn" onclick="toggleAnswerSheet()">
+          <span>📑 答题卡</span>
+          <span id="examAnsweredCount" style="color:var(--accent); font-weight:800;">0/10</span>
+        </button>
+      </div>
+
+      <!-- 答题卡浮层 -->
+      <div class="sheet-modal" id="examAnswerSheet">
+        <div style="font-size:0.85em; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
+          <span>🎯 10 题答题卡总览（点击圆圈可直接跳题）</span>
+          <span>🟢正确 🔴错误 ⚪未作答</span>
+        </div>
+        <div class="sheet-grid" id="examSheetGrid">
+          <!-- 1-10 圆圈 -->
+        </div>
+      </div>
+
+      <!-- 单题展示区 -->
+      <div class="exam-question-box" id="examQuestionBox">
+        <div>
+          <div class="exam-q-header">
+            <span class="analysis-tag" style="background:var(--primary-light); color:var(--primary);" id="examQTag">中考真题</span>
+            <span style="font-size:0.8em; color:var(--text-muted);" id="examQType">[单选题]</span>
+          </div>
+          <div class="exam-q-title" id="examQTitle">题目加载中...</div>
+        </div>
+
+        <!-- 选项 A/B/C/D -->
+        <div class="exam-options" id="examOptionsContainer">
+          <!-- 选项卡片 -->
+        </div>
+
+        <!-- 粉笔级深度解析卡片 -->
+        <div class="exam-analysis-card" id="examAnalysisCard">
+          <div class="analysis-section">
+            <span class="analysis-tag" style="background:var(--primary-light); color:var(--primary);">🎯 考点定位</span>
+            <span id="analysisPointText">...</span>
+          </div>
+          <div class="analysis-section">
+            <span class="analysis-tag" style="background:var(--accent-light); color:var(--accent);">💡 秒杀技巧</span>
+            <span id="analysisSkillText">...</span>
+          </div>
+          <div class="analysis-section" style="white-space:pre-wrap;">
+            <span class="analysis-tag" style="background:var(--warning-light); color:var(--warning);">📝 规范步骤</span>
+            <span id="analysisStepsText">...</span>
+          </div>
+          <div class="analysis-section" id="analysisWarningBox" style="color:var(--danger);">
+            <span class="analysis-tag" style="background:var(--danger-light); color:var(--danger);">⚠️ 易错警示</span>
+            <span id="analysisWarningText">...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 成绩报告单 (10题交卷后展示) -->
+      <div class="report-box" id="examReportBox">
+        <div class="report-score-circle">
+          <div class="report-score-num" id="reportScorePct">80%</div>
+          <div class="report-score-label">正确率</div>
+        </div>
+        <h3 style="font-size:1.3em; margin-bottom:8px;" id="reportTitle">🎉 恭喜完成本考点 10 题专项强化！</h3>
+        <p style="color:var(--text-muted); font-size:0.9em; margin-bottom:20px;" id="reportSummary">共作答 10 题，答对 8 题，用时 04:32，击败了 88% 的中考备考同学！</p>
+        
+        <div style="display:flex; justify-content:center; gap:12px;">
+          <button class="btn-sm primary" onclick="setPointStatusFromReport(2)">✓ 标记本考点为已吃透</button>
+          <button class="btn-sm" onclick="restartExam()">🔄 重新测试一遍</button>
+          <button class="btn-sm" onclick="closeModal('examSystemModal')">关闭返回</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 考公底部操作栏 -->
+    <div class="exam-footer-bar" id="examFooterBar">
+      <button class="btn-sm" id="prevQuestionBtn" onclick="navigateQuestion(-1)">⬅ 上一题</button>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-sm" id="nextQuestionBtn" onclick="navigateQuestion(1)">下一题 ➡</button>
+        <button class="btn-sm primary" id="submitExamBtn" onclick="finishExam()">🏁 提交答卷</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== 数据状态管理 ====================
+const STORAGE_KEY = 'math_pro_progress_v2';
+const ERRORS_KEY = 'math_pro_errors_v2';
+const STATS_KEY = 'math_pro_stats_v2';
+
+let progressState = loadJson(STORAGE_KEY, {}); 
+let errorState = loadJson(ERRORS_KEY, {});       
+let statsState = loadJson(STATS_KEY, { practiced: 0 });
+
+function loadJson(key, defaultVal) {
+  try { return JSON.parse(localStorage.getItem(key)) || defaultVal; } catch(e) { return defaultVal; }
+}
+function saveJson(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+// ==================== Tab 切换与搜索 ====================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    switchTab('tab-' + btn.dataset.tab);
+  });
+});
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId.replace('tab-', '')}"]`);
+  const targetContent = document.getElementById(tabId);
+  if (targetBtn) targetBtn.classList.add('active');
+  if (targetContent) targetContent.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setFilter(grade, el) {
+  document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  
+  const items = document.querySelectorAll('.checklist li');
+  items.forEach(li => {
+    if (grade === 'all') {
+      li.style.display = 'flex';
+    } else {
+      const tag = li.querySelector('.grade-tag');
+      if (tag && tag.classList.contains(grade)) {
+        li.style.display = 'flex';
+      } else {
+        li.style.display = 'none';
+      }
+    }
+  });
+}
+
+function handleSearch() {
+  const kw = document.getElementById('searchKw').value.trim().toLowerCase();
+  document.querySelectorAll('.checklist li').forEach(li => {
+    const text = li.innerText.toLowerCase();
+    if (!kw || text.includes(kw)) {
+      li.style.display = 'flex';
+    } else {
+      li.style.display = 'none';
+    }
+  });
+}
+
+// ==================== 状态打卡 ====================
+function cycleStatus(pointId, event) {
+  if (event) event.stopPropagation();
+  const cur = progressState[pointId] || 0;
+  const next = (cur + 1) % 4;
+  progressState[pointId] = next;
+  saveJson(STORAGE_KEY, progressState);
+  updateItemVisual(pointId, next);
+  refreshProgress();
+}
+
+function updateItemVisual(pointId, status) {
+  const items = document.querySelectorAll(`.checklist li[data-id="${pointId}"]`);
+  items.forEach(li => {
+    li.classList.remove('status-0', 'status-1', 'status-2', 'status-3');
+    li.classList.add('status-' + status);
+    const btn = li.querySelector('.status-btn');
+    if (btn) {
+      if (status === 1) btn.textContent = '⏳';
+      else if (status === 2) btn.textContent = '✓';
+      else if (status === 3) btn.textContent = '✕';
+      else btn.textContent = '';
+    }
+  });
+}
+
+function refreshProgress() {
+  const allItems = document.querySelectorAll('.checklist[data-block] li');
+  const total = allItems.length;
+  let masteredCount = 0;
+  
+  allItems.forEach(li => {
+    const pid = li.dataset.id;
+    const st = progressState[pid] || 0;
+    if (st === 2) masteredCount++;
+  });
+
+  const pct = total ? Math.round(masteredCount / total * 100) : 0;
+  document.getElementById('totalProgressBar').style.width = pct + '%';
+  document.getElementById('totalPct').textContent = pct + '%';
+  document.getElementById('totalDetail').textContent = `已吃透 ${masteredCount} / ${total} 个考点`;
+
+  document.getElementById('statPracticed').textContent = statsState.practiced || 0;
+  const errorCount = Object.keys(errorState).length;
+  document.getElementById('statErrors').textContent = errorCount;
+  document.getElementById('errorTabCount').textContent = errorCount;
+
+  renderErrorList();
+}
+
+// ==================== 1. 微课名师沉浸式电子黑板逻辑 ====================
+function openVideoModal(pointId, event) {
+  if (event) event.stopPropagation();
+  const data = (window.MATH_DATA && window.MATH_DATA[pointId]) ? window.MATH_DATA[pointId] : null;
+  const modal = document.getElementById('videoHallModal');
+  const titleEl = document.getElementById('videoHallTitle');
+  const formulaBox = document.getElementById('videoHallFormulaBox');
+  const tagEl = document.getElementById('bbCurrentTag');
+  const bTitleEl = document.getElementById('bbCurrentTitle');
+  const durationEl = document.getElementById('bbCurrentDuration');
+  const contentEl = document.getElementById('bbCurrentContent');
+  const keypointsEl = document.getElementById('bbCurrentKeypoints');
+  const epListContainer = document.getElementById('videoHallEpisodesList');
+  const smartEduLink = document.getElementById('bbSmartEduLink');
+  const onionLink = document.getElementById('bbOnionLink');
+
+  const title = data ? data.title : '初中数学核心考点';
+  titleEl.innerHTML = `📺 名师精讲微课 · <b>${title}</b>`;
+  formulaBox.innerHTML = `💡 <b>考点速记口诀 / 核心公式：</b><br>${(data && data.tips) ? data.tips : '中考核心考点，重点掌握定义推导与模型转化能力。'}`;
+
+  // 设置官方外链
+  if (smartEduLink) smartEduLink.href = `https://basic.smartedu.cn/tchMaterial?keyword=${encodeURIComponent(title)}`;
+  if (onionLink) onionLink.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent('洋葱数学 ' + title)}`;
+
+  epListContainer.innerHTML = '';
+  const episodes = (data && data.videos && data.videos.length > 0) ? data.videos : [
+    {
+      ep_id: "ep-1",
+      title: `【第 1 讲】${title} · 核心概念与定理推导`,
+      tag: "概念精讲",
+      duration: "12:30",
+      board_summary: `📌 【核心概念精析】\n1. 概念本质：${title} 是初中数学的核心考点，重点考查定义域、运算性质与公理体系；\n2. 推导过程：从基本模型出发，通过等量代换与逻辑演绎得出核心结论；\n3. 适用条件：务必满足定义域约束与前提假设，不可盲目套用公式。`,
+      key_points: [
+        "牢记基本概念与几何/代数定义",
+        "掌握定理公式的推导逻辑与反例判断",
+        "明确运算范围与字母符号的实际几何意义"
+      ]
+    },
+    {
+      ep_id: "ep-2",
+      title: `【第 2 讲】${title} · 典型例题与中考必刷题`,
+      tag: "真题实战",
+      duration: "15:40",
+      board_summary: `📌 【中考经典题型剖析】\n1. 审题破题：圈出题干中的关键词（如“互为相反数”、“垂直平分”、“顶点在x轴”）；\n2. 建模转化：将实际问题或几何条件转化为代数方程、不等式或函数解析式；\n3. 书写规范：严谨写出“解”、“设”、“因为…所以…”等中考采分点步骤。`,
+      key_points: [
+        "题型一：基础概念与性质直接计算",
+        "题型二：综合条件下的数形结合与转化",
+        "题型三：中考常见解答题规范书写流程"
+      ]
+    },
+    {
+      ep_id: "ep-3",
+      title: `【第 3 讲】${title} · 易错陷阱与满分秒杀套路`,
+      tag: "易错秒杀",
+      duration: "11:15",
+      board_summary: `📌 【名师避坑与秒杀绝招】\n1. 陷阱一：分类讨论遗漏多解（如无图几何题、绝对值距离、二次项系数为0）；\n2. 陷阱二：忽略隐含范围（分母不为0、被开方数非负、Δ≥0、实际问题正整数）；\n3. 秒杀套路：特殊值检验法、排除法、特征模型秒出答案。`,
+      key_points: [
+        "警惕隐藏条件与边界极值",
+        "牢记名师专属速记口诀",
+        "考场选择题代入验证法提速 300%"
+      ]
+    }
+  ];
+
+  function showEpisodeBoard(ep, itemEl) {
+    if (tagEl) tagEl.textContent = ep.tag || '名师精讲';
+    if (bTitleEl) bTitleEl.textContent = ep.title;
+    if (durationEl) durationEl.textContent = `时长：${ep.duration || '15:00'}`;
+    if (contentEl) contentEl.innerHTML = ep.board_summary || '名师讲义加载中...';
+    
+    if (keypointsEl) {
+      keypointsEl.innerHTML = '';
+      const points = ep.key_points || ["重点掌握定理性质", "规范步骤书写", "警惕易错陷阱"];
+      points.forEach((pt, i) => {
+        const row = document.createElement('div');
+        row.className = 'bb-keypoint-item';
+        row.innerHTML = `<span>✓</span><span>${pt}</span>`;
+        keypointsEl.appendChild(row);
+      });
+    }
+
+    epListContainer.querySelectorAll('.episode-item').forEach(it => it.classList.remove('active'));
+    if (itemEl) itemEl.classList.add('active');
+  }
+
+  episodes.forEach((ep, idx) => {
+    const item = document.createElement('div');
+    item.className = 'episode-item' + (idx === 0 ? ' active' : '');
+    item.innerHTML = `
+      <div class="ep-title">${ep.title}</div>
+      <div class="ep-desc">讲师精讲 · 时长 ${ep.duration} · 点击查看板书 ➜</div>
+    `;
+    item.onclick = () => showEpisodeBoard(ep, item);
+    epListContainer.appendChild(item);
+  });
+
+  // 默认展示第 1 讲
+  showEpisodeBoard(episodes[0], epListContainer.firstElementChild);
+
+  modal.classList.add('active');
+}
+
+// ==================== 2. 考公级 10 题刷题系统 ====================
+let currentExamPointId = null;
+let currentExamQuestions = [];
+let currentQIndex = 0;
+let userAnswers = {}; // { 0: { selected: "B", isCorrect: true } }
+let examTimerInterval = null;
+let examSeconds = 0;
+
+function openExamModal(pointId, event) {
+  if (event) event.stopPropagation();
+  currentExamPointId = pointId;
+  const data = (window.MATH_DATA && window.MATH_DATA[pointId]) ? window.MATH_DATA[pointId] : null;
+  const title = data ? data.title : '初中数学专项考点';
+
+  document.getElementById('examModalTitle').innerHTML = `✏️ 考点专项中考真题精练 · <b>${title}</b> (10题)`;
+  
+  // 获取 10 道题目
+  currentExamQuestions = (data && data.questions && data.questions.length >= 10) ? data.questions : (data && data.questions ? data.questions : []);
+  if (currentExamQuestions.length === 0) {
+    alert('暂无题目数据');
+    return;
+  }
+
+  // 重置考公刷题状态
+  currentQIndex = 0;
+  userAnswers = {};
+  examSeconds = 0;
+  
+  document.getElementById('examReportBox').style.display = 'none';
+  document.getElementById('examQuestionBox').style.display = 'flex';
+  document.getElementById('examTopBar').style.display = 'flex';
+  document.getElementById('examFooterBar').style.display = 'flex';
+  document.getElementById('examAnswerSheet').classList.remove('active');
+
+  // 启动计时器
+  clearInterval(examTimerInterval);
+  examTimerInterval = setInterval(() => {
+    examSeconds++;
+    const m = String(Math.floor(examSeconds / 60)).padStart(2, '0');
+    const s = String(examSeconds % 60).padStart(2, '0');
+    document.getElementById('examStopwatch').textContent = `⏱️ ${m}:${s}`;
+  }, 1000);
+
+  renderExamQuestion(0);
+  renderAnswerSheet();
+  document.getElementById('examSystemModal').classList.add('active');
+}
+
+function renderExamQuestion(idx) {
+  currentQIndex = idx;
+  const q = currentExamQuestions[idx];
+  const total = currentExamQuestions.length;
+
+  document.getElementById('examCurrentIdx').textContent = idx + 1;
+  document.getElementById('examDiffBadge').textContent = q.difficulty || '★★★☆☆';
+  document.getElementById('examQTag').textContent = q.grade_tag || '中考真题';
+  document.getElementById('examQTitle').innerHTML = q.title;
+
+  // 上下题按钮状态
+  document.getElementById('prevQuestionBtn').disabled = (idx === 0);
+  document.getElementById('nextQuestionBtn').textContent = (idx === total - 1) ? '已是最后一题' : '下一题 ➡';
+
+  // 渲染选项
+  const optsContainer = document.getElementById('examOptionsContainer');
+  optsContainer.innerHTML = '';
+  
+  const userAns = userAnswers[idx];
+
+  q.options.forEach(optStr => {
+    const optKey = optStr.trim().charAt(0);
+    const card = document.createElement('div');
+    card.className = 'exam-opt-card';
+    card.innerHTML = `<div class="exam-opt-circle">${optKey}</div><div>${optStr}</div>`;
+    
+    // 如果已经作答过
+    if (userAns) {
+      card.style.pointerEvents = 'none';
+      if (optKey === q.answer) {
+        card.classList.add('selected-correct');
+      } else if (userAns.selected === optKey) {
+        card.classList.add('selected-wrong');
+      }
+    } else {
+      card.onclick = () => selectExamOption(idx, optKey, q.answer, card);
+    }
+    optsContainer.appendChild(card);
+  });
+
+  // 解析区域
+  const analysisCard = document.getElementById('examAnalysisCard');
+  if (userAns) {
+    analysisCard.style.display = 'block';
+    document.getElementById('analysisPointText').textContent = q.analysis ? q.analysis.split('\n')[0] : '中考高频核心考点';
+    document.getElementById('analysisSkillText').textContent = '熟练掌握公式法则与模型转化，考场秒出答案！';
+    document.getElementById('analysisStepsText').textContent = q.analysis || '暂无详细步骤';
+    document.getElementById('analysisWarningText').textContent = q.warning || '注意分类讨论与定义域约束。';
+  } else {
+    analysisCard.style.display = 'none';
+  }
+
+  updateSheetStatus();
+}
+
+function selectExamOption(idx, selectedKey, correctKey, cardEl) {
+  const isCorrect = (selectedKey.toUpperCase() === correctKey.toUpperCase());
+  userAnswers[idx] = { selected: selectedKey, isCorrect: isCorrect };
+  
+  statsState.practiced = (statsState.practiced || 0) + 1;
+  saveJson(STATS_KEY, statsState);
+
+  // 错题自动收录
+  if (!isCorrect) {
+    const q = currentExamQuestions[idx];
+    errorState[q.id] = {
+      pointId: currentExamPointId,
+      time: new Date().toLocaleDateString(),
+      title: q.title
+    };
+    saveJson(ERRORS_KEY, errorState);
+  }
+
+  renderExamQuestion(idx);
+  refreshProgress();
+}
+
+function navigateQuestion(step) {
+  const nextIdx = currentQIndex + step;
+  if (nextIdx >= 0 && nextIdx < currentExamQuestions.length) {
+    renderExamQuestion(nextIdx);
+  }
+}
+
+function toggleAnswerSheet() {
+  document.getElementById('examAnswerSheet').classList.toggle('active');
+}
+
+function renderAnswerSheet() {
+  const grid = document.getElementById('examSheetGrid');
+  grid.innerHTML = '';
+  currentExamQuestions.forEach((q, idx) => {
+    const circle = document.createElement('div');
+    circle.className = 'sheet-circle';
+    circle.id = `sheet-circle-${idx}`;
+    circle.textContent = idx + 1;
+    circle.onclick = () => {
+      renderExamQuestion(idx);
+      document.getElementById('examAnswerSheet').classList.remove('active');
+    };
+    grid.appendChild(circle);
+  });
+  updateSheetStatus();
+}
+
+function updateSheetStatus() {
+  const total = currentExamQuestions.length;
+  let answeredCount = 0;
+
+  for (let i = 0; i < total; i++) {
+    const el = document.getElementById(`sheet-circle-${i}`);
+    if (!el) continue;
+    el.classList.remove('current', 'correct', 'wrong');
+    if (i === currentQIndex) el.classList.add('current');
+
+    if (userAnswers[i]) {
+      answeredCount++;
+      if (userAnswers[i].isCorrect) el.classList.add('correct');
+      else el.classList.add('wrong');
+    }
+  }
+
+  document.getElementById('examAnsweredCount').textContent = `${answeredCount}/${total}`;
+}
+
+function finishExam() {
+  const total = currentExamQuestions.length;
+  const answeredKeys = Object.keys(userAnswers);
+  if (answeredKeys.length < total) {
+    if (!confirm(`您还有 ${total - answeredKeys.length} 道题未作答，确定要提前交卷吗？`)) return;
+  }
+
+  clearInterval(examTimerInterval);
+
+  let correctCount = 0;
+  answeredKeys.forEach(k => {
+    if (userAnswers[k].isCorrect) correctCount++;
+  });
+
+  const pct = Math.round((correctCount / total) * 100);
+  const m = String(Math.floor(examSeconds / 60)).padStart(2, '0');
+  const s = String(examSeconds % 60).padStart(2, '0');
+
+  // 显示考公报告
+  document.getElementById('examQuestionBox').style.display = 'none';
+  document.getElementById('examTopBar').style.display = 'none';
+  document.getElementById('examFooterBar').style.display = 'none';
+  document.getElementById('examAnswerSheet').classList.remove('active');
+  
+  const reportBox = document.getElementById('examReportBox');
+  reportBox.style.display = 'block';
+  document.getElementById('reportScorePct').textContent = `${pct}%`;
+  document.getElementById('reportSummary').textContent = `共作答 ${total} 题，答对 ${correctCount} 题，总用时 ${m}:${s}，击败了 ${Math.min(99, Math.max(50, pct + 12))}% 的中考备考同学！`;
+}
+
+function restartExam() {
+  openExamModal(currentExamPointId);
+}
+
+function setPointStatusFromReport(status) {
+  if (!currentExamPointId) return;
+  progressState[currentExamPointId] = status;
+  saveJson(STORAGE_KEY, progressState);
+  updateItemVisual(currentExamPointId, status);
+  refreshProgress();
+  closeModal('examSystemModal');
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('active');
+    const iframe = modal.querySelector('iframe');
+    if (iframe) iframe.src = ''; // 停止视频播放
+  }
+}
+
+// ==================== 错题攻坚本渲染 ====================
+function renderErrorList() {
+  const listEl = document.getElementById('errorChecklist');
+  const emptyNotice = document.getElementById('emptyErrorNotice');
+  if (!listEl) return;
+
+  listEl.innerHTML = '';
+  const errorIds = Object.keys(errorState);
+
+  if (errorIds.length === 0) {
+    emptyNotice.style.display = 'block';
+    return;
+  }
+  emptyNotice.style.display = 'none';
+
+  errorIds.forEach(qid => {
+    const err = errorState[qid];
+    const li = document.createElement('li');
+    li.style.display = 'flex';
+    li.innerHTML = `
+      <span class="status-btn" style="background:var(--danger); border-color:var(--danger); color:white;">✕</span>
+      <span class="txt"><b>[错题]</b> ${err.title}</span>
+      <div class="item-actions">
+        <button class="action-btn quiz-btn" onclick="openExamModal('${err.pointId}', event)">🔄 重新攻坚(10题)</button>
+        <button class="action-btn" onclick="removeError('${qid}', event)">🗑️ 移除</button>
+      </div>
+    `;
+    listEl.appendChild(li);
+  });
+}
+
+function removeError(qid, event) {
+  if (event) event.stopPropagation();
+  delete errorState[qid];
+  saveJson(ERRORS_KEY, errorState);
+  refreshProgress();
+}
+
+function clearAllErrors() {
+  if (!confirm('确定要清空错题本吗？')) return;
+  errorState = {};
+  saveJson(ERRORS_KEY, errorState);
+  refreshProgress();
+}
+
+// ==================== 番茄钟 ====================
+let pomoTimer = null;
+let pomoSeconds = 25 * 60;
+let pomoRunning = false;
+
+function updatePomoDisplay() {
+  const m = String(Math.floor(pomoSeconds / 60)).padStart(2, '0');
+  const s = String(pomoSeconds % 60).padStart(2, '0');
+  document.getElementById('pomoTime').textContent = `${m}:${s}`;
+}
+
+function togglePomodoro() {
+  const btn = document.getElementById('pomoToggleBtn');
+  if (!pomoRunning) {
+    pomoRunning = true;
+    btn.textContent = '暂停';
+    pomoTimer = setInterval(() => {
+      if (pomoSeconds > 0) {
+        pomoSeconds--;
+        updatePomoDisplay();
+      } else {
+        clearInterval(pomoTimer);
+        pomoRunning = false;
+        btn.textContent = '开始';
+        alert('🎉 恭喜完成一个 25 分钟专注学习番茄钟！休息 5 分钟吧。');
+        pomoSeconds = 25 * 60;
+        updatePomoDisplay();
+      }
+    }, 1000);
+  } else {
+    clearInterval(pomoTimer);
+    pomoRunning = false;
+    btn.textContent = '继续';
+  }
+}
+
+function resetPomodoro() {
+  clearInterval(pomoTimer);
+  pomoRunning = false;
+  pomoSeconds = 25 * 60;
+  document.getElementById('pomoToggleBtn').textContent = '开始';
+  updatePomoDisplay();
+}
+
+// ==================== 数据导入导出 ====================
+function exportUserData() {
+  const exportData = {
+    version: "3.0",
+    date: new Date().toISOString(),
+    progress: progressState,
+    errors: errorState,
+    stats: statsState
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `初中数学学习提分记录_${new Date().toLocaleDateString()}.json`;
+  a.click();
+}
+
+function importUserData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const data = JSON.parse(evt.target.result);
+      if (data.progress) {
+        progressState = data.progress;
+        saveJson(STORAGE_KEY, progressState);
+      }
+      if (data.errors) {
+        errorState = data.errors;
+        saveJson(ERRORS_KEY, errorState);
+      }
+      if (data.stats) {
+        statsState = data.stats;
+        saveJson(STATS_KEY, statsState);
+      }
+      initVisuals();
+      refreshProgress();
+      alert('✅ 学习记录导入成功！');
+    } catch(err) {
+      alert('[-] 导入文件解析失败，请确保为标准的 JSON 备份文件。');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function initVisuals() {
+  document.querySelectorAll('.checklist li').forEach(li => {
+    const pid = li.dataset.id;
+    const st = progressState[pid] || 0;
+    updateItemVisual(pid, st);
+    
+    // 点击整行直接进入 10 题刷题系统
+    li.onclick = (e) => {
+      if (e.target.closest('.status-btn') || e.target.closest('.action-btn')) return;
+      openExamModal(pid, e);
+    };
+  });
+}
+
+// 初始化
+initVisuals();
+refreshProgress();
+</script>
+</body>
+</html>
