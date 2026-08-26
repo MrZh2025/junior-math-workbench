@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -723,6 +723,10 @@
     </div>
 
     <div class="quick-stats">
+      <div class="stat-badge" style="cursor:pointer;" onclick="doCheckin()" title="每日学习打卡，连续打卡不断档！">
+        <div class="num" id="statStreak" style="color:var(--accent);">0</div>
+        <div class="txt" id="checkinTxt">📅 点击打卡</div>
+      </div>
       <div class="stat-badge">
         <div class="num" id="statPracticed">0</div>
         <div class="txt">已练考题数</div>
@@ -805,6 +809,23 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="panel" style="margin-top:16px;">
+      <h4>⏰ 每周固定学习时间表（定制：周一至周五 40 分钟 / 周末 2 小时）</h4>
+      <table class="plan-table">
+        <thead>
+          <tr><th>时间</th><th>时长</th><th>学习安排</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>周一 ~ 周五</b>（每天）</td><td>40 分钟</td><td>15 分钟微课视频 → 20 分钟刷 10 题真题 → 5 分钟错题回顾与打卡</td></tr>
+          <tr><td><b>周六</b></td><td>2 小时</td><td>本周新考点集中攻坚：看完整微课 + 每个考点刷满 10 题 + 收录错题</td></tr>
+          <tr><td><b>周日</b></td><td>2 小时</td><td>错题衍生特训（错题本重做）+ 板块通关测试；正确率 &lt; 90% 则补充延展视频学习</td></tr>
+        </tbody>
+      </table>
+      <div class="panel" style="margin-top:12px;">
+        <h4>📆 我的打卡日历（最近 14 天）</h4>
+        <div id="checkinCalendar" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+      </div>
     </div>
   </div>
 
@@ -1136,7 +1157,17 @@
             </div>
           </div>
 
-
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; margin-top:auto;">
+            <span style="font-size:0.8em; color:#94a3b8;">如需观看官方录制视频，可直达：</span>
+            <div style="display:flex; gap:8px;">
+              <a id="bbSmartEduLink" href="https://basic.smartedu.cn/" target="_blank" class="btn-sm" style="background:#059669; color:white; border:none; text-decoration:none; font-size:0.78em;">
+                🏛️ 国家智慧教育平台 ↗
+              </a>
+              <a id="bbOnionLink" href="https://search.bilibili.com/all?keyword=%E6%B4%8B%E8%91%B1%E6%95%B0%E5%AD%A6" target="_blank" class="btn-sm" style="background:#db2777; color:white; border:none; text-decoration:none; font-size:0.78em;">
+                🧅 洋葱动画微课 ↗
+              </a>
+            </div>
+          </div>
         </div>
 
         <!-- 右侧选集列表 -->
@@ -1228,6 +1259,8 @@
         </div>
         <h3 style="font-size:1.3em; margin-bottom:8px;" id="reportTitle">🎉 恭喜完成本考点 10 题专项强化！</h3>
         <p style="color:var(--text-muted); font-size:0.9em; margin-bottom:20px;" id="reportSummary">共作答 10 题，答对 8 题，用时 04:32，击败了 88% 的中考备考同学！</p>
+
+        <div id="reportAdvice" style="text-align:left; margin:0 auto 20px; max-width:560px;"></div>
         
         <div style="display:flex; justify-content:center; gap:12px;">
           <button class="btn-sm primary" onclick="setPointStatusFromReport(2)">✓ 标记本考点为已吃透</button>
@@ -1280,11 +1313,13 @@ const store = loadStore();
 let progressState = store.progress || {};
 let errorState = store.errors || {};
 let statsState = store.stats || { practiced: 0 };
+let checkinState = store.checkins || {};
 
 function persistStore() {
   store.progress = progressState;
   store.errors = errorState;
   store.stats = statsState;
+  store.checkins = checkinState;
   saveJson(STORE_KEY, store);
 }
 
@@ -1415,6 +1450,8 @@ function openVideoModal(pointId, event) {
   const contentEl = document.getElementById('bbCurrentContent');
   const keypointsEl = document.getElementById('bbCurrentKeypoints');
   const epListContainer = document.getElementById('videoHallEpisodesList');
+  const smartEduLink = document.getElementById('bbSmartEduLink');
+  const onionLink = document.getElementById('bbOnionLink');
   const playerBox = document.getElementById('videoPlayerBox');
   const playerIframe = document.getElementById('videoHallIframe');
   const playerMeta = document.getElementById('videoPlayerMeta');
@@ -1424,6 +1461,9 @@ function openVideoModal(pointId, event) {
   titleEl.innerHTML = `📺 名师精讲微课 · <b>${title}</b>`;
   formulaBox.innerHTML = `💡 <b>考点速记口诀 / 核心公式：</b><br>${(data && data.tips) ? data.tips : '中考核心考点，重点掌握定义推导与模型转化能力。'}`;
 
+  // 设置官方外链
+  if (smartEduLink) smartEduLink.href = `https://basic.smartedu.cn/tchMaterial?keyword=${encodeURIComponent(title)}`;
+  if (onionLink) onionLink.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent('洋葱数学 ' + title)}`;
 
   epListContainer.innerHTML = '';
   const episodes = (data && data.videos && data.videos.length > 0) ? data.videos : [
@@ -1736,6 +1776,25 @@ function finishExam() {
   reportBox.style.display = 'block';
   document.getElementById('reportScorePct').textContent = `${pct}%`;
   document.getElementById('reportSummary').textContent = `共作答 ${total} 题，答对 ${correctCount} 题，总用时 ${m}:${s}，击败了 ${Math.min(99, Math.max(50, pct + 12))}% 的中考备考同学！`;
+
+  // ===== 90% 正确率通关闸门：未达标则推送补充延展视频 =====
+  const adviceEl = document.getElementById('reportAdvice');
+  if (adviceEl) {
+    const data = (window.MATH_DATA && window.MATH_DATA[currentExamPointId]) ? window.MATH_DATA[currentExamPointId] : null;
+    const title = data ? data.title : '本考点';
+    if (pct >= 90) {
+      adviceEl.innerHTML = `<div style="background:var(--accent-light); border:1px solid var(--accent); border-radius:10px; padding:12px 16px; font-size:0.9em;">🏆 <b>正确率达到 90% 通关线！</b>本考点已达标，可标记为已吃透，继续下一个考点。</div>`;
+    } else {
+      let videoLinks = '';
+      const rv = (data && data.real_videos) ? data.real_videos : [];
+      rv.forEach(v => {
+        videoLinks += `<li style="margin:4px 0;"><a href="https://www.bilibili.com/video/${v.bvid}" target="_blank" style="color:var(--primary);">▶ ${v.title}</a> <span style="color:var(--text-muted); font-size:0.85em;">(UP：${v.author || 'B站'} · ${v.duration || '-'})</span></li>`;
+      });
+      videoLinks += `<li style="margin:4px 0;"><a href="https://search.bilibili.com/all?keyword=${encodeURIComponent('初中数学 ' + title + ' 讲解')}" target="_blank" style="color:var(--primary);">🔍 搜索更多「${title}」延展视频 ↗</a></li>`;
+      videoLinks += `<li style="margin:4px 0;"><a href="https://basic.smartedu.cn/tchMaterial?keyword=${encodeURIComponent(title)}" target="_blank" style="color:var(--primary);">🏛️ 国家智慧教育平台同步课 ↗</a></li>`;
+      adviceEl.innerHTML = `<div style="background:var(--warning-light); border:1px solid var(--warning); border-radius:10px; padding:12px 16px; font-size:0.9em;">⚠️ <b>正确率 ${pct}%，未达到 90% 通关线。</b>按学习计划需补充以下延展视频学习后重新测试：<ul style="margin:8px 0 0 18px;">${videoLinks}</ul></div>`;
+    }
+  }
 }
 
 function restartExam() {
@@ -1783,12 +1842,26 @@ function renderErrorList() {
       <span class="status-btn" style="background:var(--danger); border-color:var(--danger); color:white;">✕</span>
       <span class="txt"><b>[错题]</b> ${err.title}</span>
       <div class="item-actions">
-        <button class="action-btn quiz-btn" onclick="openExamModal('${err.pointId}', event)">🔄 重新攻坚(10题)</button>
+        <button class="action-btn quiz-btn" onclick="openDerivedExam('${err.pointId}', event)">🧬 错题衍生特训</button>
+        <button class="action-btn video-btn" onclick="openVideoModal('${err.pointId}', event)">📺 补看微课</button>
         <button class="action-btn" onclick="removeError('${qid}', event)">🗑️ 移除</button>
       </div>
     `;
     listEl.appendChild(li);
   });
+}
+
+// ==================== 错题衍生特训（同考点题目随机重组） ====================
+function openDerivedExam(pointId, event) {
+  if (event) event.stopPropagation();
+  openExamModal(pointId, event);
+  // 在原 10 题基础上随机打乱顺序，形成衍生特训卷
+  if (currentExamQuestions && currentExamQuestions.length > 1) {
+    currentExamQuestions = currentExamQuestions.slice().sort(() => Math.random() - 0.5);
+    renderExamQuestion(0);
+    renderAnswerSheet();
+    document.getElementById('examModalTitle').innerHTML = document.getElementById('examModalTitle').innerHTML.replace('考点专项中考真题精练', '🧬 错题衍生特训卷');
+  }
 }
 
 function removeError(qid, event) {
@@ -1803,6 +1876,59 @@ function clearAllErrors() {
   errorState = {};
   persistStore();
   refreshProgress();
+}
+
+// ==================== 每日打卡 ====================
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function calcStreak() {
+  let streak = 0;
+  const d = new Date();
+  if (!checkinState[todayKey()]) d.setDate(d.getDate() - 1); // 今天未打卡则从昨天往前算
+  while (true) {
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (checkinState[k]) { streak++; d.setDate(d.getDate() - 1); }
+    else break;
+  }
+  return streak;
+}
+
+function doCheckin() {
+  const k = todayKey();
+  if (checkinState[k]) {
+    alert('✅ 今天已打卡，继续保持！当前已连续打卡 ' + calcStreak() + ' 天。');
+    return;
+  }
+  checkinState[k] = { time: new Date().toLocaleTimeString(), practiced: statsState.practiced || 0 };
+  persistStore();
+  refreshCheckinUI();
+  alert('🎉 打卡成功！已连续打卡 ' + calcStreak() + ' 天，坚持就是胜利！');
+}
+
+function refreshCheckinUI() {
+  const streak = calcStreak();
+  const streakEl = document.getElementById('statStreak');
+  const txtEl = document.getElementById('checkinTxt');
+  if (streakEl) streakEl.textContent = streak;
+  if (txtEl) txtEl.textContent = checkinState[todayKey()] ? '✅ 今日已打卡' : '📅 点击打卡';
+
+  const cal = document.getElementById('checkinCalendar');
+  if (cal) {
+    cal.innerHTML = '';
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const done = !!checkinState[k];
+      const cell = document.createElement('div');
+      cell.style.cssText = `width:52px; text-align:center; padding:6px 0; border-radius:8px; font-size:0.72em; border:1px solid ${done ? 'var(--accent)' : 'var(--border)'}; background:${done ? 'var(--accent-light)' : 'var(--bg)'}; color:${done ? 'var(--accent)' : 'var(--text-muted)'};`;
+      cell.innerHTML = `${d.getMonth()+1}/${d.getDate()}<br>${done ? '✔' : '·'}`;
+      cal.appendChild(cell);
+    }
+  }
 }
 
 // ==================== 番茄钟 ====================
@@ -1856,7 +1982,8 @@ function exportUserData() {
     date: new Date().toISOString(),
     progress: progressState,
     errors: errorState,
-    stats: statsState
+    stats: statsState,
+    checkins: checkinState
   };
   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -1885,8 +2012,13 @@ function importUserData(e) {
         statsState = data.stats;
         persistStore();
       }
+      if (data.checkins) {
+        checkinState = data.checkins;
+        persistStore();
+      }
       initVisuals();
       refreshProgress();
+      refreshCheckinUI();
       alert('✅ 学习记录导入成功！');
     } catch(err) {
       alert('[-] 导入文件解析失败，请确保为标准的 JSON 备份文件。');
@@ -1912,6 +2044,7 @@ function initVisuals() {
 // 初始化
 initVisuals();
 refreshProgress();
+refreshCheckinUI();
 </script>
 </body>
 </html>
