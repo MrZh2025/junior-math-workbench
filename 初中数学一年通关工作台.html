@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -10,6 +10,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <!-- 预载入抓取与生成的微课和 10 题真题库数据 -->
 <script src="math_data.js"></script>
+<!-- KaTeX 数学公式渲染（联网加载，离线时自动降级为纯文本） -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 <style>
   :root {
     --primary: #2563eb;
@@ -483,6 +487,53 @@
   }
   .bb-keypoint-item { display: flex; align-items: flex-start; gap: 6px; }
   
+  /* 内嵌 B 站视频播放器 */
+  .video-player-box {
+    background: #000;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    border: 2px solid #334155;
+  }
+  .video-player-box .player-ratio {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+  }
+  .video-player-box iframe {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: none;
+  }
+  .video-player-meta {
+    padding: 8px 12px;
+    font-size: 0.82em;
+    color: #94a3b8;
+    background: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .video-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .video-chip {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.82em;
+    font-weight: 700;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    max-width: 320px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .video-chip:hover { border-color: var(--pink); color: var(--pink); }
+  .video-chip.active { background: var(--pink); color: white; border-color: var(--pink); }
+
   .episodes-list { display: flex; flex-direction: column; gap: 10px; max-height: 400px; overflow-y: auto; }
   .episode-item {
     background: var(--bg);
@@ -1054,6 +1105,15 @@
       <div id="videoHallFormulaBox" class="quiz-warning-box" style="margin-top:0; margin-bottom:12px;">
         <!-- 考点口诀 -->
       </div>
+      <!-- 内嵌 B 站视频播放区（有真实视频源时显示） -->
+      <div class="video-player-box" id="videoPlayerBox" style="display:none;">
+        <div class="player-ratio">
+          <iframe id="videoHallIframe" src="" scrolling="no" frameborder="no" allowfullscreen="true" referrerpolicy="no-referrer"></iframe>
+        </div>
+        <div class="video-player-meta" id="videoPlayerMeta"></div>
+      </div>
+      <div class="video-chips" id="videoChips" style="display:none;"></div>
+
       <div class="video-hall-layout">
         <!-- 名师电子黑板视窗 -->
         <div class="blackboard-box">
@@ -1200,20 +1260,57 @@
 </div>
 
 <script>
-// ==================== 数据状态管理 ====================
-const STORAGE_KEY = 'math_pro_progress_v2';
-const ERRORS_KEY = 'math_pro_errors_v2';
-const STATS_KEY = 'math_pro_stats_v2';
-
-let progressState = loadJson(STORAGE_KEY, {}); 
-let errorState = loadJson(ERRORS_KEY, {});       
-let statsState = loadJson(STATS_KEY, { practiced: 0 });
+// ==================== 数据状态管理（v3 统一命名空间 + 版本迁移） ====================
+const STORE_KEY = 'math_pro_v3';
+const SCHEMA_VERSION = 3;
 
 function loadJson(key, defaultVal) {
   try { return JSON.parse(localStorage.getItem(key)) || defaultVal; } catch(e) { return defaultVal; }
 }
 function saveJson(key, val) {
   try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+
+function loadStore() {
+  let s = loadJson(STORE_KEY, null);
+  if (!s || !s.schemaVersion) {
+    // 从 v2 三个旧 key 无损迁移
+    s = {
+      schemaVersion: SCHEMA_VERSION,
+      progress: loadJson('math_pro_progress_v2', {}),
+      errors: loadJson('math_pro_errors_v2', {}),
+      stats: loadJson('math_pro_stats_v2', { practiced: 0 })
+    };
+    saveJson(STORE_KEY, s);
+  }
+  return s;
+}
+
+const store = loadStore();
+let progressState = store.progress || {};
+let errorState = store.errors || {};
+let statsState = store.stats || { practiced: 0 };
+
+function persistStore() {
+  store.progress = progressState;
+  store.errors = errorState;
+  store.stats = statsState;
+  saveJson(STORE_KEY, store);
+}
+
+// ==================== KaTeX 公式渲染辅助 ====================
+function renderMath(el) {
+  if (el && window.renderMathInElement) {
+    try {
+      renderMathInElement(el, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ],
+        throwOnError: false
+      });
+    } catch(e) {}
+  }
 }
 
 // ==================== Tab 切换与搜索 ====================
@@ -1271,7 +1368,7 @@ function cycleStatus(pointId, event) {
   const cur = progressState[pointId] || 0;
   const next = (cur + 1) % 4;
   progressState[pointId] = next;
-  saveJson(STORAGE_KEY, progressState);
+  persistStore();
   updateItemVisual(pointId, next);
   refreshProgress();
 }
@@ -1330,6 +1427,10 @@ function openVideoModal(pointId, event) {
   const epListContainer = document.getElementById('videoHallEpisodesList');
   const smartEduLink = document.getElementById('bbSmartEduLink');
   const onionLink = document.getElementById('bbOnionLink');
+  const playerBox = document.getElementById('videoPlayerBox');
+  const playerIframe = document.getElementById('videoHallIframe');
+  const playerMeta = document.getElementById('videoPlayerMeta');
+  const chipsBox = document.getElementById('videoChips');
 
   const title = data ? data.title : '初中数学核心考点';
   titleEl.innerHTML = `📺 名师精讲微课 · <b>${title}</b>`;
@@ -1398,6 +1499,7 @@ function openVideoModal(pointId, event) {
 
     epListContainer.querySelectorAll('.episode-item').forEach(it => it.classList.remove('active'));
     if (itemEl) itemEl.classList.add('active');
+    renderMath(contentEl);
   }
 
   episodes.forEach((ep, idx) => {
@@ -1414,6 +1516,36 @@ function openVideoModal(pointId, event) {
   // 默认展示第 1 讲
   showEpisodeBoard(episodes[0], epListContainer.firstElementChild);
 
+  // ===== 内嵌 B 站真实视频（由 crawler 抓取回填 real_videos）=====
+  const realVideos = (data && data.real_videos) ? data.real_videos : [];
+  function playRealVideo(v, chipEl) {
+    playerIframe.src = `https://player.bilibili.com/player.html?bvid=${v.bvid}&page=1&high_quality=1&danmaku=0&autoplay=0`;
+    playerMeta.innerHTML = `<span>▶ ${v.title}</span><span>UP：${v.author || 'B站'} · 时长 ${v.duration || '-'}</span>`;
+    chipsBox.querySelectorAll('.video-chip').forEach(c => c.classList.remove('active'));
+    if (chipEl) chipEl.classList.add('active');
+  }
+  if (playerBox && chipsBox) {
+    chipsBox.innerHTML = '';
+    if (realVideos.length > 0) {
+      playerBox.style.display = 'block';
+      chipsBox.style.display = realVideos.length > 1 ? 'flex' : 'none';
+      realVideos.forEach((v, i) => {
+        const chip = document.createElement('div');
+        chip.className = 'video-chip' + (i === 0 ? ' active' : '');
+        chip.title = v.title;
+        chip.textContent = `📺 ${i + 1}. ${v.title}`;
+        chip.onclick = () => playRealVideo(v, chip);
+        chipsBox.appendChild(chip);
+      });
+      playRealVideo(realVideos[0], chipsBox.firstElementChild);
+    } else {
+      playerBox.style.display = 'none';
+      chipsBox.style.display = 'none';
+      playerIframe.src = '';
+    }
+  }
+
+  renderMath(formulaBox);
   modal.classList.add('active');
 }
 
@@ -1517,6 +1649,7 @@ function renderExamQuestion(idx) {
     analysisCard.style.display = 'none';
   }
 
+  renderMath(document.getElementById('examQuestionBox'));
   updateSheetStatus();
 }
 
@@ -1525,7 +1658,7 @@ function selectExamOption(idx, selectedKey, correctKey, cardEl) {
   userAnswers[idx] = { selected: selectedKey, isCorrect: isCorrect };
   
   statsState.practiced = (statsState.practiced || 0) + 1;
-  saveJson(STATS_KEY, statsState);
+  persistStore();
 
   // 错题自动收录
   if (!isCorrect) {
@@ -1535,7 +1668,7 @@ function selectExamOption(idx, selectedKey, correctKey, cardEl) {
       time: new Date().toLocaleDateString(),
       title: q.title
     };
-    saveJson(ERRORS_KEY, errorState);
+    persistStore();
   }
 
   renderExamQuestion(idx);
@@ -1627,7 +1760,7 @@ function restartExam() {
 function setPointStatusFromReport(status) {
   if (!currentExamPointId) return;
   progressState[currentExamPointId] = status;
-  saveJson(STORAGE_KEY, progressState);
+  persistStore();
   updateItemVisual(currentExamPointId, status);
   refreshProgress();
   closeModal('examSystemModal');
@@ -1676,14 +1809,14 @@ function renderErrorList() {
 function removeError(qid, event) {
   if (event) event.stopPropagation();
   delete errorState[qid];
-  saveJson(ERRORS_KEY, errorState);
+  persistStore();
   refreshProgress();
 }
 
 function clearAllErrors() {
   if (!confirm('确定要清空错题本吗？')) return;
   errorState = {};
-  saveJson(ERRORS_KEY, errorState);
+  persistStore();
   refreshProgress();
 }
 
@@ -1757,15 +1890,15 @@ function importUserData(e) {
       const data = JSON.parse(evt.target.result);
       if (data.progress) {
         progressState = data.progress;
-        saveJson(STORAGE_KEY, progressState);
+        persistStore();
       }
       if (data.errors) {
         errorState = data.errors;
-        saveJson(ERRORS_KEY, errorState);
+        persistStore();
       }
       if (data.stats) {
         statsState = data.stats;
-        saveJson(STATS_KEY, statsState);
+        persistStore();
       }
       initVisuals();
       refreshProgress();

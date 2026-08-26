@@ -17,7 +17,7 @@ if sys.platform == 'win32':
     except Exception:
         pass
 
-from bilibili_video_crawler import get_default_micro_courses
+from bilibili_video_crawler import get_default_micro_courses, get_real_videos
 from seed_question_bank import get_questions_for_point
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -61,10 +61,13 @@ def build_dataset():
         title = p["title"]
         grade = p["grade"]
         
-        # 1. 内部可播放的微课选集列表
+        # 1. 内部可播放的微课选集列表（板书讲义）
         videos = get_default_micro_courses(pid, title)
-            
-        # 2. 10 题真题库与深度解析
+
+        # 2. B 站真实可内嵌播放视频（来自 video_map.json 缓存，运行 bilibili_video_crawler.py 可重新抓取）
+        real_videos = get_real_videos(pid)
+
+        # 3. 10 题真题库与深度解析
         qb = get_questions_for_point(pid, title, grade)
         
         dataset[pid] = {
@@ -74,6 +77,7 @@ def build_dataset():
             "star": qb.get("star", 5),
             "tips": qb.get("tips", ""),
             "videos": videos,
+            "real_videos": real_videos,
             "questions": qb.get("questions", [])
         }
     

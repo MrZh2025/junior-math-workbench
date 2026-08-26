@@ -1,17 +1,30 @@
 # -*- coding: utf-8 -*-
 """
-初中数学权威微课讲义与名师板书数据库 (100% 内嵌可用，绝无外部防盗链黑屏)
-为每个知识点生成包含【第1讲 概念推导】、【第2讲 典型例题】、【第3讲 易错秒杀】的完整板书微课
+初中数学权威微课讲义与名师板书数据库
+1. get_default_micro_courses: 为每个知识点生成【第1讲 概念推导】【第2讲 典型例题】【第3讲 易错秒杀】板书讲义
+2. get_real_videos: 读取 video_map.json 缓存，返回该考点可内嵌播放的 B 站真实视频列表
+3. crawl_real_videos: 联网调用 B 站搜索 API，为所有考点抓取真实视频并更新 video_map.json 缓存
+   （直接运行本文件即可重新抓取：python bilibili_video_crawler.py）
 """
 
 import json
+import os
+import re
+import sys
+import time
+import urllib.request
+import urllib.parse
+import http.cookiejar
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+VIDEO_MAP_PATH = os.path.join(BASE_DIR, "video_map.json")
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
+
 
 def get_default_micro_courses(point_id, point_name):
     """
     生成高质量内部可交互微课讲义与多源通道
     """
-    prefix = point_id.split("-")[0] if "-" in point_id else "b1"
-    
     episodes = [
         {
             "ep_id": "ep-1",
@@ -51,3 +64,107 @@ def get_default_micro_courses(point_id, point_name):
         }
     ]
     return episodes
+
+
+def _load_video_map():
+    if os.path.exists(VIDEO_MAP_PATH):
+        try:
+            with open(VIDEO_MAP_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {}
+
+
+def get_real_videos(point_id):
+    """
+    返回该考点已抓取缓存的 B 站真实可内嵌视频列表：
+    [{"bvid", "title", "author", "duration", "play"}, ...]
+    """
+    vm = _load_video_map()
+    return vm.get(point_id, {}).get("videos", [])
+
+
+# ==================== 联网抓取部分 ====================
+
+def _make_opener():
+    cj = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+    opener.addheaders = [("User-Agent", UA), ("Referer", "https://www.bilibili.com/")]
+    return opener
+
+
+def _dur_secs(d):
+    try:
+        s = 0
+        for p in d.split(":"):
+            s = s * 60 + int(p)
+        return s
+    except Exception:
+        return 0
+
+
+def _clean_title(t):
+    return re.sub(r"</?em[^>]*>", "", t)
+
+
+def crawl_real_videos(points, per_point=3, sleep_secs=2.5):
+    """
+    points: [{"id":..., "title":...}, ...]
+    为每个考点用 B 站搜索 API 抓取 3 条可内嵌视频（3-60 分钟），写入 video_map.json 缓存
+    """
+    opener = _make_opener()
+    # 先访问首页领取 cookie（buvid），否则搜索接口触发风控
+    try:
+        opener.open("https://www.bilibili.com/", timeout=20).read()
+    except Exception as e:
+        print(f"[-] 访问 B 站首页失败：{e}")
+
+    vm = _load_video_map()
+    for p in points:
+        pid, title = p["id"], p["title"]
+        kw = "初中数学 " + title
+        url = ("https://api.bilibili.com/x/web-interface/search/type?search_type=video"
+               "&keyword=" + urllib.parse.quote(kw) + "&page=1&order=totalrank")
+        vids = []
+        try:
+            data = json.loads(opener.open(url, timeout=20).read().decode("utf-8", "replace"))
+            if data.get("code") == 0:
+                for item in (data.get("data") or {}).get("result") or []:
+                    ds = _dur_secs(item.get("duration", ""))
+                    if ds < 180 or ds > 3600:
+                        continue
+                    vids.append({
+                        "bvid": item["bvid"],
+                        "title": _clean_title(item.get("title", "")),
+                        "author": item.get("author", ""),
+                        "duration": item.get("duration", ""),
+                        "play": item.get("play", 0),
+                    })
+                    if len(vids) >= per_point:
+                        break
+            else:
+                print(f"[-] {pid} 搜索接口返回 code={data.get('code')}（可能触发风控，可稍后重试）")
+        except Exception as e:
+            print(f"[-] {pid} 抓取失败：{e}")
+
+        if vids:
+            vm[pid] = {"keyword": kw, "videos": vids}
+        print(f"[*] {pid} {title} -> {len(vids)} 条视频")
+        time.sleep(sleep_secs)
+
+    with open(VIDEO_MAP_PATH, "w", encoding="utf-8") as f:
+        json.dump(vm, f, ensure_ascii=False, indent=2)
+    print(f"[+] 已更新视频缓存: {VIDEO_MAP_PATH}")
+    return vm
+
+
+if __name__ == "__main__":
+    if sys.platform == "win32":
+        try:
+            sys.stdout.reconfigure(encoding="utf-8")
+        except Exception:
+            pass
+    # 独立运行时：从 export_data 的解析函数拿到全部考点后抓取
+    from export_data import parse_points_from_html
+    crawl_real_videos(parse_points_from_html())
