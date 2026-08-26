@@ -2281,8 +2281,8 @@ function refreshCheckinUI() {
       const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
       const done = !!checkinState[k];
       const cell = document.createElement('div');
-      cell.style.cssText = `width:52px; text-align:center; padding:6px 0; border-radius:8px; font-size:0.72em; border:1px solid ${done ? 'var(--accent)' : 'var(--border)'}; background:${done ? 'var(--accent-light)' : 'var(--bg)'}; color:${done ? 'var(--accent)' : 'var(--text-muted)'};`;
-      cell.innerHTML = `${d.getMonth()+1}/${d.getDate()}<br>${done ? '✔' : '·'}`;
+      cell.className = 'checkin-cell ' + (done ? 'done' : 'undone');
+      cell.innerHTML = `<b>${d.getMonth()+1}/${d.getDate()}</b><br>${done ? '✔' : '·'}`;
       cal.appendChild(cell);
     }
   }
