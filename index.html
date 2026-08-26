@@ -1783,8 +1783,6 @@ function openVideoModal(pointId, event) {
   const contentEl = document.getElementById('bbCurrentContent');
   const keypointsEl = document.getElementById('bbCurrentKeypoints');
   const epListContainer = document.getElementById('videoHallEpisodesList');
-  const smartEduLink = document.getElementById('bbSmartEduLink');
-  const onionLink = document.getElementById('bbOnionLink');
   const playerBox = document.getElementById('videoPlayerBox');
   const playerIframe = document.getElementById('videoHallIframe');
   const playerMeta = document.getElementById('videoPlayerMeta');
@@ -1793,10 +1791,6 @@ function openVideoModal(pointId, event) {
   const title = data ? data.title : '初中数学核心考点';
   titleEl.innerHTML = `📺 名师精讲微课 · <b>${title}</b>`;
   formulaBox.innerHTML = `💡 <b>考点速记口诀 / 核心公式：</b><br>${(data && data.tips) ? data.tips : '中考核心考点，重点掌握定义推导与模型转化能力。'}`;
-
-  // 设置官方外链
-  if (smartEduLink) smartEduLink.href = `https://basic.smartedu.cn/tchMaterial?keyword=${encodeURIComponent(title)}`;
-  if (onionLink) onionLink.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent('洋葱数学 ' + title)}`;
 
   epListContainer.innerHTML = '';
   const episodes = (data && data.videos && data.videos.length > 0) ? data.videos : [
