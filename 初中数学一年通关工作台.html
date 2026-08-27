@@ -2052,21 +2052,26 @@
 
         <!-- 粉笔级深度解析卡片 -->
         <div class="exam-analysis-card" id="examAnalysisCard">
+          <div class="analysis-section" id="analysisAnswerRow" style="padding-bottom:8px; border-bottom:1px dashed var(--border);">
+            <span class="analysis-tag" style="background:#ecfdf5; color:#059669; font-weight:900;">🏆 正确答案</span>
+            <span id="analysisCorrectAnswerText" style="font-weight:900; font-size:1.15em; color:#059669;">A</span>
+            <span id="analysisUserAnswerText" style="margin-left:12px; font-size:0.9em;"></span>
+          </div>
           <div class="analysis-section">
             <span class="analysis-tag" style="background:var(--primary-light); color:var(--primary);">🎯 考点定位</span>
             <span id="analysisPointText">...</span>
           </div>
-          <div class="analysis-section">
-            <span class="analysis-tag" style="background:var(--accent-light); color:var(--accent);">💡 秒杀技巧</span>
-            <span id="analysisSkillText">...</span>
+          <div class="analysis-section" style="background:rgba(245,158,11,0.08); padding:8px 12px; border-radius:6px; border-left:3px solid #f59e0b;">
+            <span class="analysis-tag" style="background:#fef3c7; color:#b45309;">💡 为什么选这个答案（破局点）</span>
+            <div id="analysisReasonText" style="margin-top:4px; font-weight:700; color:#92400e; line-height:1.6;">...</div>
           </div>
           <div class="analysis-section" style="white-space:pre-wrap;">
-            <span class="analysis-tag" style="background:var(--warning-light); color:var(--warning);">📝 规范步骤</span>
-            <span id="analysisStepsText">...</span>
+            <span class="analysis-tag" style="background:var(--accent-light); color:var(--accent);">📝 规范推导与步骤解析</span>
+            <div id="analysisStepsText" style="margin-top:4px; color:var(--text-main); line-height:1.65;">...</div>
           </div>
-          <div class="analysis-section" id="analysisWarningBox" style="color:var(--danger);">
-            <span class="analysis-tag" style="background:var(--danger-light); color:var(--danger);">⚠️ 易错警示</span>
-            <span id="analysisWarningText">...</span>
+          <div class="analysis-section" id="analysisWarningBox" style="color:var(--danger); background:rgba(239,68,68,0.06); padding:8px 12px; border-radius:6px; border-left:3px solid #ef4444;">
+            <span class="analysis-tag" style="background:var(--danger-light); color:var(--danger);">⚠️ 易错警示与避坑</span>
+            <div id="analysisWarningText" style="margin-top:4px; font-weight:600;">...</div>
           </div>
         </div>
       </div>
