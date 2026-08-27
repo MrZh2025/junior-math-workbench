@@ -2523,10 +2523,12 @@ function renderExamQuestion(idx) {
   const userAns = userAnswers[idx];
 
   q.options.forEach(optStr => {
-    const optKey = optStr.trim().charAt(0);
+    // 强制过滤任何意外残留的（正确）字样，确保作答前100%纯净中立
+    const cleanOptStr = typeof optStr === 'string' ? optStr.replace(/[（(]\s*正确\s*[）)]/g, '').trim() : optStr;
+    const optKey = (typeof cleanOptStr === 'string') ? cleanOptStr.trim().charAt(0) : 'A';
     const card = document.createElement('div');
     card.className = 'exam-opt-card';
-    card.innerHTML = `<div class="exam-opt-circle">${optKey}</div><div>${optStr}</div>`;
+    card.innerHTML = `<div class="exam-opt-circle">${optKey}</div><div>${cleanOptStr}</div>`;
     
     // 如果已经作答过
     if (userAns) {
