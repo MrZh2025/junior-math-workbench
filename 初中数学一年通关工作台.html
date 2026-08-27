@@ -2545,11 +2545,38 @@ function renderExamQuestion(idx) {
   // 解析区域
   const analysisCard = document.getElementById('examAnalysisCard');
   if (userAns) {
-    analysisCard.style.display = 'block';
-    document.getElementById('analysisPointText').textContent = q.analysis ? q.analysis.split('\n')[0] : '中考高频核心考点';
-    document.getElementById('analysisSkillText').textContent = '熟练掌握公式法则与模型转化，考场秒出答案！';
-    document.getElementById('analysisStepsText').textContent = q.analysis || '暂无详细步骤';
-    document.getElementById('analysisWarningText').textContent = q.warning || '注意分类讨论与定义域约束。';
+    analysisCard.style.display = 'flex';
+    const correctOpt = q.answer || 'A';
+    const optObj = q.options ? q.options.find(o => o.key === correctOpt) : null;
+    const optValText = optObj ? optObj.val : '';
+    
+    document.getElementById('analysisCorrectAnswerText').textContent = `${correctOpt} ( ${optValText} )`;
+    
+    const userRow = document.getElementById('analysisUserAnswerText');
+    if (userAns.isCorrect) {
+      userRow.innerHTML = `<span style="color:#059669; font-weight:bold;">✅ 恭喜答对！</span>`;
+    } else {
+      userRow.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 您的作答：${userAns.selected}</span>`;
+    }
+
+    const pointName = q.tag || (data ? data.title : '中考考点');
+    document.getElementById('analysisPointText').textContent = `${pointName} · 考查层级：${q.difficulty || '★★★☆☆'}`;
+    
+    // 为什么选这个答案（破局核心原因）
+    let reasonText = `【选择依据与破局逻辑】根据题目条件与数学定理法则，本题考查核心为「${pointName}」。通过严谨推导可知，正确选项为 ${correctOpt}（即 ${optValText}）。只有该选项完全契合数学公理定义与几何/代数运算法则，其余选项均存在运算符号错误、概念混淆或不满足题目定义域/增减性约束。`;
+    if (q.analysis && q.analysis.includes('【思路】')) {
+      const parts = q.analysis.split('【解析】');
+      if (parts.length > 0) {
+        reasonText = parts[0].replace('【思路】', '').trim();
+      }
+    }
+    document.getElementById('analysisReasonText').textContent = reasonText;
+
+    // 规范步骤
+    document.getElementById('analysisStepsText').textContent = q.analysis || `1. 审题明确考查范围与已知条件；\n2. 依据定理公式进行规范推演；\n3. 代入验证并排除干扰项，锁定正确选项 ${correctOpt}。`;
+    
+    // 易错警示
+    document.getElementById('analysisWarningText').textContent = q.warning || '注意审题，防止混淆运算符号、忽略定义域/非零约束或漏掉分类讨论情况。';
   } else {
     analysisCard.style.display = 'none';
   }
