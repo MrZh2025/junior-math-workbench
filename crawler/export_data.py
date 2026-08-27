@@ -50,7 +50,7 @@ def parse_points_from_html():
 
 def build_dataset():
     """
-    构建全量知识点内嵌微课与 10 题真题数据集
+    构建全量知识点内嵌微课与 50 题阶梯真题数据集
     """
     points = parse_points_from_html()
     print(f"[*] 从工作台中共提取到 {len(points)} 个知识点。")
@@ -67,7 +67,7 @@ def build_dataset():
         # 2. B 站真实可内嵌播放视频（来自 video_map.json 缓存，运行 bilibili_video_crawler.py 可重新抓取）
         real_videos = get_real_videos(pid)
 
-        # 3. 10 题真题库与深度解析
+        # 3. 50 题真题库与深度解析
         qb = get_questions_for_point(pid, title, grade)
         
         dataset[pid] = {
@@ -83,9 +83,9 @@ def build_dataset():
     
     with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
         json.dump(dataset, f, ensure_ascii=False, indent=2)
-    print(f"[+] 已生成 JSON 题库与视频文件: {OUTPUT_JSON}")
+    print(f"[+] 已生成 JSON 50 题题库与视频文件: {OUTPUT_JSON}")
     
-    js_content = f"// 初中数学知识点微课与精选题库数据\nwindow.MATH_DATA = {json.dumps(dataset, ensure_ascii=False, indent=2)};\n"
+    js_content = f"// 初中数学知识点微课与50题精选题库数据\nwindow.MATH_DATA = {json.dumps(dataset, ensure_ascii=False, indent=2)};\n"
     with open(OUTPUT_JS, "w", encoding="utf-8") as f:
         f.write(js_content)
     print(f"[+] 已生成 JS 预载入文件: {OUTPUT_JS}")

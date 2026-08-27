@@ -1987,19 +1987,34 @@
   </div>
 </div>
 
-<!-- ==================== 2. 考公级 10 题真题刷题系统 Modal ==================== -->
+<!-- ==================== 2. 考公级 50 题真题刷题系统 Modal ==================== -->
 <div class="modal-overlay" id="examSystemModal">
   <div class="modal-card exam-modal-card">
     <div class="modal-header">
-      <h3 id="examModalTitle">✏️ 考点专项中考真题精练 (10题通关)</h3>
+      <h3 id="examModalTitle">✏️ 考点专项中考真题精练 (50题真题库)</h3>
       <button class="modal-close" onclick="closeModal('examSystemModal')">&times;</button>
     </div>
     <div class="modal-body" id="examModalBody">
       
+      <!-- 题量自定义切换胶囊栏 -->
+      <div class="exam-volume-bar" id="examVolumeBar">
+        <div class="exam-volume-group">
+          <span style="font-size:0.85em; font-weight:800; color:var(--text-main);">🎯 刷题量：</span>
+          <button class="exam-vol-btn" data-vol="5" onclick="setExamVolume(5)">5题速练</button>
+          <button class="exam-vol-btn active" data-vol="10" onclick="setExamVolume(10)">10题标准</button>
+          <button class="exam-vol-btn" data-vol="20" onclick="setExamVolume(20)">20题进阶</button>
+          <button class="exam-vol-btn" data-vol="30" onclick="setExamVolume(30)">30题模拟</button>
+          <button class="exam-vol-btn" data-vol="50" onclick="setExamVolume(50)">50题全量通关</button>
+        </div>
+        <div style="font-size:0.8em; color:var(--text-muted);">
+          <span>梯级难度：基础➔高频➔拔高➔压轴</span>
+        </div>
+      </div>
+
       <!-- 顶部考公状态条 -->
       <div class="exam-top-bar" id="examTopBar">
         <div>
-          <span>第 <b id="examCurrentIdx" style="color:var(--primary); font-size:1.2em;">1</b> / 10 题</span>
+          <span>第 <b id="examCurrentIdx" style="color:var(--primary); font-size:1.2em;">1</b> / <span id="examTotalCount">10</span> 题</span>
           <span id="examDiffBadge" style="margin-left:12px; font-size:0.85em; color:var(--warning);">★★☆☆☆</span>
         </div>
         <div class="exam-timer" id="examStopwatch">⏱️ 00:00</div>
@@ -2012,11 +2027,11 @@
       <!-- 答题卡浮层 -->
       <div class="sheet-modal" id="examAnswerSheet">
         <div style="font-size:0.85em; font-weight:700; color:var(--text-muted); display:flex; justify-content:space-between;">
-          <span>🎯 10 题答题卡总览（点击圆圈可直接跳题）</span>
+          <span id="sheetModalTitle">🎯 10 题答题卡总览（点击圆圈可直接跳题）</span>
           <span>🟢正确 🔴错误 ⚪未作答</span>
         </div>
         <div class="sheet-grid" id="examSheetGrid">
-          <!-- 1-10 圆圈 -->
+          <!-- 动态渲染圆圈 (5/10/20/30/50) -->
         </div>
       </div>
 
