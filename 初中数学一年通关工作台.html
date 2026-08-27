@@ -2447,6 +2447,44 @@ function initVisuals() {
   });
 }
 
+function toggleSidebar() {
+  const sidebar = document.getElementById('appSidebar');
+  if (sidebar) {
+    sidebar.classList.toggle('active');
+    sidebar.classList.toggle('collapsed');
+  }
+}
+
+// ==================== 考公纯净模式：键盘快捷键 (A/B/C/D / 左右键切题) ====================
+document.addEventListener('keydown', (e) => {
+  const modal = document.getElementById('examSystemModal');
+  if (!modal || !modal.classList.contains('active')) return;
+
+  // 忽略输入框内的按键
+  if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+  const key = e.key.toUpperCase();
+  if (['A', 'B', 'C', 'D'].includes(key)) {
+    // 触发对应选项点击
+    const currentQ = currentExamQuestions ? currentExamQuestions[currentQIndex] : null;
+    if (currentQ && !userAnswers[currentQIndex]) {
+      const cards = document.querySelectorAll('#examOptionsContainer .exam-opt-card');
+      cards.forEach(card => {
+        const circle = card.querySelector('.exam-opt-circle');
+        if (circle && circle.textContent.trim() === key) {
+          selectExamOption(currentQIndex, key, currentQ.answer, card);
+        }
+      });
+    }
+  } else if (e.key === 'ArrowLeft') {
+    if (currentQIndex > 0) navigateQuestion(-1);
+  } else if (e.key === 'ArrowRight') {
+    if (currentExamQuestions && currentQIndex < currentExamQuestions.length - 1) {
+      navigateQuestion(1);
+    }
+  }
+});
+
 // 初始化
 initVisuals();
 refreshProgress();
