@@ -2568,7 +2568,8 @@ function renderExamQuestion(idx) {
       userRow.innerHTML = `<span style="color:#ef4444; font-weight:bold;">❌ 您的作答：${userAns.selected}</span>`;
     }
 
-    const pointName = q.tag || (data ? data.title : '中考考点');
+    const currentData = (window.MATH_DATA && currentExamPointId && window.MATH_DATA[currentExamPointId]) ? window.MATH_DATA[currentExamPointId] : null;
+    const pointName = q.tag || (currentData ? currentData.title : '中考考点');
     document.getElementById('analysisPointText').textContent = `${pointName} · 考查层级：${q.difficulty || '★★★☆☆'}`;
     
     // 为什么选这个答案（破局核心原因）与解题步骤解析
