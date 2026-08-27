@@ -1008,90 +1008,153 @@
     .exam-footer-bar .btn-sm { flex: 1; text-align: center; }
   }
 </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <div class="header-content">
-    <h1>初中数学一年通关提升工作台 Pro</h1>
-    <p class="subtitle">🎯 北师大版知识树全景 · 4大权威公开课精讲展厅 · 考公级10题真题精练系统</p>
-    <div class="header-actions">
-      <div class="action-chip" onclick="exportUserData()">💾 导出学习数据 (JSON)</div>
-      <label class="action-chip" style="margin:0;">
-        📂 导入学习记录
+<div class="app-layout">
+  <!-- SaaS Left Sidebar -->
+  <aside class="app-sidebar" id="appSidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">📐</div>
+      <div class="brand-info">
+        <span class="brand-title">初中数学工作台</span>
+        <span class="brand-tag">SaaS Pro · 一年通关</span>
+      </div>
+    </div>
+
+    <!-- 打卡概览卡片 -->
+    <div class="sidebar-checkin" onclick="doCheckin()" title="点击完成今日学习打卡">
+      <div class="checkin-title">📅 每日打卡状态</div>
+      <div class="checkin-row">
+        <span class="checkin-streak" id="statStreak">0</span>
+        <span class="checkin-badge" id="checkinTxt">点击打卡</span>
+      </div>
+    </div>
+
+    <!-- 侧边栏导航菜单 -->
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">核心导航</div>
+      <div class="tab-btn active" data-tab="overview">
+        <span class="nav-icon">�️</span>
+        <span class="nav-text">路线与总览</span>
+      </div>
+
+      <div class="nav-section-title">六大核心考点板块</div>
+      <div class="tab-btn" data-tab="b1">
+        <span class="nav-icon">🔢</span>
+        <span class="nav-text">板块一 · 数与代数</span>
+      </div>
+      <div class="tab-btn" data-tab="b2">
+        <span class="nav-icon">⚖️</span>
+        <span class="nav-text">板块二 · 方程不等式</span>
+      </div>
+      <div class="tab-btn" data-tab="b3">
+        <span class="nav-icon">📈</span>
+        <span class="nav-text">板块三 · 函数与图像</span>
+      </div>
+      <div class="tab-btn" data-tab="b4">
+        <span class="nav-icon">📐</span>
+        <span class="nav-text">板块四 · 几何基础</span>
+      </div>
+      <div class="tab-btn" data-tab="b5">
+        <span class="nav-icon">⭕</span>
+        <span class="nav-text">板块五 · 几何综合与圆</span>
+      </div>
+      <div class="tab-btn" data-tab="b6">
+        <span class="nav-icon">📊</span>
+        <span class="nav-text">板块六 · 统计与概率</span>
+      </div>
+
+      <div class="nav-section-title">攻坚与资源</div>
+      <div class="tab-btn error-tab" data-tab="error">
+        <span class="nav-icon">❌</span>
+        <span class="nav-text">错题攻坚本</span>
+        <span class="badge-count" id="errorTabCount">0</span>
+      </div>
+      <div class="tab-btn" data-tab="resources">
+        <span class="nav-icon">📚</span>
+        <span class="nav-text">权威公开课与题库</span>
+      </div>
+    </nav>
+
+    <!-- 侧边栏底部操作区 -->
+    <div class="sidebar-footer">
+      <button class="btn-sidebar" onclick="exportUserData()">
+        <span>💾</span> 导出学习数据
+      </button>
+      <label class="btn-sidebar" style="margin:0;">
+        <span>📂</span> 导入学习记录
         <input type="file" id="importFileInput" style="display:none" onchange="importUserData(event)">
       </label>
-      <div class="action-chip" onclick="window.print()">🖨️ 打印 A4 复习单</div>
+      <button class="btn-sidebar" onclick="window.print()">
+        <span>🖨️</span> 打印 A4 复习单
+      </button>
     </div>
-  </div>
-</div>
+  </aside>
 
-<div class="container">
-  <!-- Dashboard Stats & Pomodoro -->
-  <div class="dashboard">
-    <div class="stat-col">
-      <div class="stat-title">🚩 总体提分通关进度</div>
-      <div class="progress-outer">
-        <div class="progress-inner" id="totalProgressBar"></div>
+  <!-- SaaS Main Container -->
+  <div class="app-main">
+    <!-- Topbar Header -->
+    <header class="app-topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()" title="收起/展开侧边栏">
+          <span>☰</span>
+        </button>
+        <div class="topbar-search">
+          <input type="text" class="search-input" id="searchKw" placeholder="🔍 搜索知识点名称、考点或年级（如：二次函数、配方法、八上）..." oninput="handleSearch()">
+        </div>
       </div>
-      <div class="stat-desc">
-        <span id="totalDetail">已吃透 0 / 89 个考点</span>
-        <b id="totalPct">0%</b>
-      </div>
-    </div>
 
-    <div class="quick-stats">
-      <div class="stat-badge" style="cursor:pointer;" onclick="doCheckin()" title="每日学习打卡，连续打卡不断档！">
-        <div class="num" id="statStreak" style="color:var(--accent);">0</div>
-        <div class="txt" id="checkinTxt">📅 点击打卡</div>
-      </div>
-      <div class="stat-badge">
-        <div class="num" id="statPracticed">0</div>
-        <div class="txt">已练考题数</div>
-      </div>
-      <div class="stat-badge danger" style="cursor:pointer;" onclick="switchTab('tab-error')">
-        <div class="num" id="statErrors">0</div>
-        <div class="txt">错题待攻坚</div>
-      </div>
-    </div>
+      <div class="topbar-right">
+        <!-- 年级筛选胶囊 -->
+        <div class="filter-tags">
+          <div class="filter-tag active" data-filter="all" onclick="setFilter('all', this)">全部考点</div>
+          <div class="filter-tag" data-filter="g7" onclick="setFilter('g7', this)">七年级</div>
+          <div class="filter-tag" data-filter="g8" onclick="setFilter('g8', this)">八年级</div>
+          <div class="filter-tag" data-filter="g9" onclick="setFilter('g9', this)">九年级</div>
+        </div>
 
-    <!-- Pomodoro Timer -->
-    <div class="pomo-box">
-      <div>
-        <div style="font-size:0.75em; font-weight:700; color:var(--text-muted);">⏱️ 专注番茄钟</div>
-        <div class="pomo-time" id="pomoTime">25:00</div>
+        <!-- 紧凑专注番茄钟 -->
+        <div class="pomo-box">
+          <div class="pomo-info">
+            <span class="pomo-label">⏱️ 番茄钟</span>
+            <span class="pomo-time" id="pomoTime">25:00</span>
+          </div>
+          <div class="pomo-btns">
+            <button class="btn-sm primary" id="pomoToggleBtn" onclick="togglePomodoro()">开始</button>
+            <button class="btn-sm" onclick="resetPomodoro()">重置</button>
+          </div>
+        </div>
       </div>
-      <div class="pomo-btns">
-        <button class="btn-sm primary" id="pomoToggleBtn" onclick="togglePomodoro()">开始</button>
-        <button class="btn-sm" onclick="resetPomodoro()">重置</button>
+    </header>
+
+    <!-- Workspace Main Body -->
+    <div class="app-body">
+      <!-- Dashboard Stats -->
+      <div class="dashboard">
+        <div class="stat-col">
+          <div class="stat-title">🚩 总体提分通关进度</div>
+          <div class="progress-outer">
+            <div class="progress-inner" id="totalProgressBar"></div>
+          </div>
+          <div class="stat-desc">
+            <span id="totalDetail">已吃透 0 / 89 个考点</span>
+            <b id="totalPct">0%</b>
+          </div>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat-badge">
+            <div class="num" id="statPracticed">0</div>
+            <div class="txt">已练考题数</div>
+          </div>
+          <div class="stat-badge danger" style="cursor:pointer;" onclick="switchTab('tab-error')">
+            <div class="num" id="statErrors">0</div>
+            <div class="txt">错题待攻坚</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Search & Filters -->
-  <div class="filter-bar">
-    <input type="text" class="search-input" id="searchKw" placeholder="🔍 搜索知识点名称、考点或年级（如：二次函数、配方法、八上）..." oninput="handleSearch()">
-    <div class="filter-tags">
-      <div class="filter-tag active" data-filter="all" onclick="setFilter('all', this)">全部考点</div>
-      <div class="filter-tag" data-filter="g7" onclick="setFilter('g7', this)">七年级</div>
-      <div class="filter-tag" data-filter="g8" onclick="setFilter('g8', this)">八年级</div>
-      <div class="filter-tag" data-filter="g9" onclick="setFilter('g9', this)">九年级</div>
-    </div>
-  </div>
-
-  <!-- Tabs Navigation -->
-  <div class="tabs">
-    <div class="tab-btn active" data-tab="overview">🗺️ 路线与总览</div>
-    <div class="tab-btn" data-tab="b1">板块一 · 数与代数</div>
-    <div class="tab-btn" data-tab="b2">板块二 · 方程不等式</div>
-    <div class="tab-btn" data-tab="b3">板块三 · 函数与图像</div>
-    <div class="tab-btn" data-tab="b4">板块四 · 几何基础</div>
-    <div class="tab-btn" data-tab="b5">板块五 · 几何综合与圆</div>
-    <div class="tab-btn" data-tab="b6">板块六 · 统计与概率</div>
-    <div class="tab-btn error-tab" data-tab="error">❌ 错题攻坚本 <span class="badge-count" id="errorTabCount">0</span></div>
-    <div class="tab-btn" data-tab="resources">📚 权威公开课与题库源</div>
-  </div>
 
   <!-- Tab 0: Overview -->
   <div class="tab-content active" id="tab-overview">
