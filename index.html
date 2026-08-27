@@ -2569,18 +2569,34 @@ function renderExamQuestion(idx) {
     const pointName = q.tag || (data ? data.title : '中考考点');
     document.getElementById('analysisPointText').textContent = `${pointName} · 考查层级：${q.difficulty || '★★★☆☆'}`;
     
-    // 为什么选这个答案（破局核心原因）
+    // 为什么选这个答案（破局核心原因）与解题步骤解析
     let reasonText = `【选择依据与破局逻辑】根据题目条件与数学定理法则，本题考查核心为「${pointName}」。通过严谨推导可知，正确选项为 ${correctOpt}（即 ${optValText}）。只有该选项完全契合数学公理定义与几何/代数运算法则，其余选项均存在运算符号错误、概念混淆或不满足题目定义域/增减性约束。`;
-    if (q.analysis && q.analysis.includes('【思路】')) {
-      const parts = q.analysis.split('【解析】');
-      if (parts.length > 0) {
-        reasonText = parts[0].replace('【思路】', '').trim();
+    let stepsText = q.analysis || `1. 审题明确考查范围与已知条件；\n2. 依据定理公式进行规范推演；\n3. 代入验证并排除干扰项，锁定正确选项 ${correctOpt}。`;
+
+    if (q.analysis) {
+      if (q.analysis.includes('【秒杀技巧】') && q.analysis.includes('【详细解析】')) {
+        const parts = q.analysis.split('【详细解析】');
+        const topParts = parts[0].split('【秒杀技巧】');
+        const skillText = topParts.length > 1 ? topParts[1].trim() : '';
+        if (skillText) {
+          reasonText = `【秒杀破局与核心依据】\n${skillText}`;
+        }
+        if (parts[1]) {
+          stepsText = `【详细推导与选项排查】\n${parts[1].trim()}`;
+        }
+      } else if (q.analysis.includes('【思路】')) {
+        const parts = q.analysis.split('【解析】');
+        if (parts[0]) {
+          reasonText = parts[0].replace('【思路】', '').trim();
+        }
+        if (parts[1]) {
+          stepsText = parts[1].trim();
+        }
       }
     }
-    document.getElementById('analysisReasonText').textContent = reasonText;
 
-    // 规范步骤
-    document.getElementById('analysisStepsText').textContent = q.analysis || `1. 审题明确考查范围与已知条件；\n2. 依据定理公式进行规范推演；\n3. 代入验证并排除干扰项，锁定正确选项 ${correctOpt}。`;
+    document.getElementById('analysisReasonText').textContent = reasonText;
+    document.getElementById('analysisStepsText').textContent = stepsText;
     
     // 易错警示
     document.getElementById('analysisWarningText').textContent = q.warning || '注意审题，防止混淆运算符号、忽略定义域/非零约束或漏掉分类讨论情况。';
