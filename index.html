@@ -2509,8 +2509,9 @@ function renderExamQuestion(idx) {
   const total = currentExamQuestions.length;
 
   document.getElementById('examCurrentIdx').textContent = idx + 1;
-  document.getElementById('examDiffBadge').textContent = q.difficulty || '★★★☆☆';
-  document.getElementById('examQTag').textContent = q.grade_tag || '中考真题';
+  document.getElementById('examDiffBadge').textContent = '难度：' + (q.difficulty || '★★★☆☆');
+  const originTag = q.grade_tag || '中考真题';
+  document.getElementById('examQTag').innerHTML = `<span style="font-size:1.1em;">🏛️</span> ${originTag}`;
   document.getElementById('examQTitle').innerHTML = q.title;
 
   // 上下题按钮状态
