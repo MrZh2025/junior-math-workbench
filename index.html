@@ -2402,13 +2402,45 @@ function openVideoModal(pointId, event) {
   modal.classList.add('active');
 }
 
-// ==================== 2. 考公级 10 题刷题系统 ====================
+// ==================== 2. 考公级 50 题刷题系统 ====================
 let currentExamPointId = null;
+let fullExamBank = [];
 let currentExamQuestions = [];
+let currentExamVolume = 10;
 let currentQIndex = 0;
 let userAnswers = {}; // { 0: { selected: "B", isCorrect: true } }
 let examTimerInterval = null;
 let examSeconds = 0;
+
+function setExamVolume(vol) {
+  if (!currentExamPointId) return;
+  currentExamVolume = parseInt(vol, 10) || 10;
+  
+  document.querySelectorAll('.exam-vol-btn').forEach(btn => {
+    if (parseInt(btn.getAttribute('data-vol'), 10) === currentExamVolume) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  if (fullExamBank && fullExamBank.length > 0) {
+    currentExamQuestions = fullExamBank.slice(0, Math.min(currentExamVolume, fullExamBank.length));
+  } else {
+    currentExamQuestions = [];
+  }
+
+  currentQIndex = 0;
+  userAnswers = {};
+  examSeconds = 0;
+
+  document.getElementById('examTotalCount').textContent = currentExamQuestions.length;
+  document.getElementById('examAnsweredCount').textContent = `0/${currentExamQuestions.length}`;
+  document.getElementById('sheetModalTitle').textContent = `🎯 ${currentExamQuestions.length} 题答题卡总览（点击圆圈可直接跳题）`;
+
+  renderExamQuestion(0);
+  renderAnswerSheet();
+}
 
 function openExamModal(pointId, event) {
   if (event) event.stopPropagation();
@@ -2416,19 +2448,34 @@ function openExamModal(pointId, event) {
   const data = (window.MATH_DATA && window.MATH_DATA[pointId]) ? window.MATH_DATA[pointId] : null;
   const title = data ? data.title : '初中数学专项考点';
 
-  document.getElementById('examModalTitle').innerHTML = `✏️ 考点专项中考真题精练 · <b>${title}</b> (10题)`;
+  document.getElementById('examModalTitle').innerHTML = `✏️ 考点专项中考真题精练 · <b>${title}</b> (50题真题库)`;
   
-  // 获取 10 道题目
-  currentExamQuestions = (data && data.questions && data.questions.length >= 10) ? data.questions : (data && data.questions ? data.questions : []);
-  if (currentExamQuestions.length === 0) {
+  // 获取全量 50 题库
+  fullExamBank = (data && data.questions && data.questions.length > 0) ? data.questions : [];
+  if (fullExamBank.length === 0) {
     alert('暂无题目数据');
     return;
   }
+
+  // 默认使用当前设定的题量切片
+  currentExamQuestions = fullExamBank.slice(0, Math.min(currentExamVolume, fullExamBank.length));
 
   // 重置考公刷题状态
   currentQIndex = 0;
   userAnswers = {};
   examSeconds = 0;
+
+  document.querySelectorAll('.exam-vol-btn').forEach(btn => {
+    if (parseInt(btn.getAttribute('data-vol'), 10) === currentExamVolume) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  document.getElementById('examTotalCount').textContent = currentExamQuestions.length;
+  document.getElementById('examAnsweredCount').textContent = `0/${currentExamQuestions.length}`;
+  document.getElementById('sheetModalTitle').textContent = `🎯 ${currentExamQuestions.length} 题答题卡总览（点击圆圈可直接跳题）`;
   
   document.getElementById('examReportBox').style.display = 'none';
   document.getElementById('examQuestionBox').style.display = 'flex';
