@@ -2547,10 +2547,17 @@ function renderExamQuestion(idx) {
   if (userAns) {
     analysisCard.style.display = 'flex';
     const correctOpt = q.answer || 'A';
-    const optObj = q.options ? q.options.find(o => o.key === correctOpt) : null;
-    const optValText = optObj ? optObj.val : '';
+    let optValText = '';
+    if (Array.isArray(q.options)) {
+      const matchOpt = q.options.find(o => typeof o === 'string' ? o.trim().startsWith(correctOpt) : (o && o.key === correctOpt));
+      if (typeof matchOpt === 'string') {
+        optValText = matchOpt.replace(/^[A-D][.、\s]*/, '').trim();
+      } else if (matchOpt && matchOpt.val) {
+        optValText = matchOpt.val;
+      }
+    }
     
-    document.getElementById('analysisCorrectAnswerText').textContent = `${correctOpt} ( ${optValText} )`;
+    document.getElementById('analysisCorrectAnswerText').textContent = optValText ? `${correctOpt} ( ${optValText} )` : correctOpt;
     
     const userRow = document.getElementById('analysisUserAnswerText');
     if (userAns.isCorrect) {
